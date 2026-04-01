@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="dia">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Magy Rivera Boutique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --rosa: #c0306a;
+      --rosa-claro: #e8819f;
+      --fondo: #fce4ec;
+      --blanco: #ffffff;
+      --texto: #3a2030;
+      --sombra: rgba(192, 48, 106, 0.18);
+    }
+
+    [data-tema="noche"] {
+      --fondo: #1a0a12;
+      --blanco: #2a1020;
+      --texto: #f5d0e0;
+      --sombra: rgba(192, 48, 106, 0.4);
+      --rosa-claro: #d4608a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: var(--fondo);
+      color: var(--texto);
+      background-image: url('flor.png');
+      background-repeat: repeat;
+      background-size: 110px 110px;
+      background-attachment: fixed;
+      transition: background-color 0.4s, color 0.4s;
+      cursor: none;
+    }
+
+    /* cursor personalizado corazón */
+    #cursor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      font-size: 1.2rem;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease;
+      user-select: none;
+    }
+
+    /* splash */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #c0306a, #8a1a45);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: salirSplash 0.8s ease 2.4s forwards;
+    }
+
+    #splash img {
+      width: 155px;
+      height: 155px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 0 50px rgba(255,255,255,0.3);
+      animation: subirFade 0.8s ease 0.2s both;
+    }
+
+    #splash h2 {
+      font-family: 'Playfair Display', serif;
+      color: white;
+      font-size: 1.7rem;
+      margin-top: 16px;
+      letter-spacing: 3px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      animation: subirFade 0.8s ease 0.5s both;
+    }
+
+    #splash p {
+      color: rgba(255,255,255,0.82);
+      font-style: italic;
+      font-size: 0.95rem;
+      margin-top: 4px;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.25);
+      animation: subirFade 0.8s ease 0.8s both;
+    }
+
+    @keyframes subirFade {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes salirSplash {
+      to { opacity: 0; pointer-events: none; }
+    }
+
+    #contenido {
+      opacity: 0;
+      animation: aparecer 0.7s ease 2.7s forwards;
+    }
+
+    @keyframes aparecer { to { opacity: 1; } }
+
+    /* botón tema */
+    #btnTema {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 1000;
+      background: var(--rosa);
+      border: none;
+      border-radius: 50px;
+      padding: 9px 18px;
+      color: white;
+      font-size: 1.1rem;
+      cursor: none;
+      box-shadow: 0 3px 14px var(--sombra);
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    #btnTema:hover { transform: scale(1.08); }
+
+    /* header */
+    header {
+      text-align: center;
+      background: linear-gradient(160deg, #c0306a 0%, #8a1a45 100%);
+      clip-path: ellipse(100% 86% at 50% 14%);
+      padding: 65px 20px 90px;
+    }
+
+    header img.logo {
+      width: 185px;
+      height: 185px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid white;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+      transition: transform 0.3s;
+    }
+
+    header img.logo:hover { transform: scale(1.05) rotate(2deg); }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      color: white;
+      font-size: 2.4rem;
+      margin-top: 18px;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    header .slogan {
+      color: white;
+      font-style: italic;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-top: 8px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5), 0 3px 10px rgba(0,0,0,0.3);
+    }
+
+    /* banner de frases rotativas */
+    .banner-frases {
+      background: var(--rosa);
+      overflow: hidden;
+      padding: 13px 0;
+      white-space: nowrap;
+    }
+
+    .frases-track {
+      display: inline-block;
+      animation: correrFrases 28s linear infinite;
+    }
+
+    .frases-track span {
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 0 40px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .frases-track span::before {
+      content: "✦ ";
+    }
+
+    @keyframes correrFrases {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* tarjetas */
+    .tarjeta {
+      background: var(--blanco);
+      max-width: 760px;
+      margin: 30px auto;
+      border-radius: 22px;
+      padding: 50px 30px;
+      box-shadow: 0 6px 28px var(--sombra);
+      text-align: center;
+      transition: background 0.4s;
+    }
+
+    .tarjeta h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--rosa);
+      margin-bottom: 6px;
+      text-shadow: 0 1px 6px rgba(192, 48, 106, 0.2);
+    }
+
+    .tarjeta .sub {
+      color: var(--rosa-claro);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    /* íconos redes con animación */
+    .iconos-redes {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .iconos-redes a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      color: var(--texto);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: transform 0.25s;
+    }
+
+    .iconos-redes a:hover { transform: translateY(-7px) scale(1.08); }
+
+    .iconos-redes img {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px var(--sombra);
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+
+    .iconos-redes a:hover img {
+      box-shadow: 0 10px 28px var(--sombra);
+      animation: wiggle 0.4s ease;
+    }
+
+    @keyframes wiggle {
+      0%   { transform: rotate(0deg); }
+      25%  { transform: rotate(-8deg); }
+      75%  { transform: rotate(8deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* por qué elegirnos */
+    .razones {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .razon {
+      flex: 1;
+      min-width: 180px;
+      max-width: 210px;
+      background: var(--fondo);
+      border-radius: 16px;
+      padding: 28px 18px;
+      text-align: center;
+      transition: transform 0.25s, background 0.4s;
+    }
+
+    .razon:hover { transform: translateY(-5px); }
+
+    .razon .emoji {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .razon h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--rosa);
+      margin-bottom: 8px;
+    }
+
+    .razon p {
+      font-size: 0.87rem;
+      color: var(--texto);
+      line-height: 1.6;
+      opacity: 0.85;
+    }
+
+    /* horario */
+    .horario-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .dia-horario {
+      background: var(--fondo);
+      border-radius: 14px;
+      padding: 20px 28px;
+      min-width: 200px;
+      transition: transform 0.25s, background 0.4s;
+    }
+
+    .dia-horario:hover { transform: translateY(-4px); }
+
+    .dia-horario h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--rosa);
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    .dia-horario p {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--texto);
+    }
+
+    /* contador visitas */
+    .contador-wrap {
+      margin-top: 14px;
+      font-size: 0.88rem;
+      color: var(--rosa-claro);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* mapa */
+    .tarjeta iframe {
+      width: 100%;
+      max-width: 680px;
+      height: 380px;
+      border: none;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px var(--sombra);
+      margin-top: 10px;
+    }
+
+    .direccion-texto {
+      color: var(--texto);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      background: linear-gradient(135deg, #c0306a, #8a1a45);
+      color: white;
+      text-align: center;
+      padding: 24px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- cursor corazón -->
+  <div id="cursor">💗</div>
+
+  <!-- splash -->
+  <div id="splash">
+    <img src="logo.jpg.jpg" alt="Logo Magy Rivera" />
+    <h2>Magy Rivera</h2>
+    <p>Boutique · Donde el lujo no cuesta más</p>
+  </div>
+
+  <button id="btnTema" onclick="cambiarTema()">🌙</button>
+
+  <div id="contenido">
+
+    <header>
+      <img class="logo" src="logo.jpg.jpg" alt="Logo Magy Rivera Boutique" />
+      <h1>Magy Rivera Boutique</h1>
+      <p class="slogan">✦ Donde el lujo no cuesta más ✦</p>
+    </header>
+
+    <!-- banner frases rotativas (duplicadas para loop infinito) -->
+    <div class="banner-frases">
+      <div class="frases-track">
+        <span>Nueva colección disponible</span>
+        <span>Envíos a todo México</span>
+        <span>Moda con corazón</span>
+        <span>Prendas únicas para mujeres únicas</span>
+        <span>El lujo que mereces al precio que quieres</span>
+        <span>Tu boutique de confianza en Cosoleacaque</span>
+        <span>Nueva colección disponible</span>
+        <span>Envíos a todo México</span>
+        <span>Moda con corazón</span>
+        <span>Prendas únicas para mujeres únicas</span>
+        <span>El lujo que mereces al precio que quieres</span>
+        <span>Tu boutique de confianza en Cosoleacaque</span>
+      </div>
+    </div>
+
+    <!-- redes -->
+    <section class="tarjeta">
+      <h2>Síguenos</h2>
+      <p class="sub">Toca un ícono para visitarnos 💕</p>
+      <div class="iconos-redes">
+
+        <a href="https://www.facebook.com/profile.php?id=100063507883652&locale=es_LA" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" />
+          Facebook
+        </a>
+
+        <a href="https://www.instagram.com/magy.riveraa/" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+          Instagram
+        </a>
+
+        <a href="https://wa.me/529221282878" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+          WhatsApp
+        </a>
+
+        <a href="https://www.tiktok.com/@magyriverat" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg" alt="TikTok" />
+          TikTok
+        </a>
+
+      </div>
+      <div class="contador-wrap" id="contadorTexto">👁️ Cargando visitas...</div>
+    </section>
+
+    <!-- por qué elegirnos -->
+    <section class="tarjeta">
+      <h2>¿Por qué elegirnos?</h2>
+      <p class="sub">Porque tú te mereces lo mejor 💖</p>
+      <div class="razones">
+        <div class="razon">
+          <span class="emoji">🚚</span>
+          <h3>Envíos a todo México</h3>
+          <p>Llevamos tu pedido hasta la puerta de tu casa, donde quiera que estés.</p>
+        </div>
+        <div class="razon">
+          <span class="emoji">✨</span>
+          <h3>Calidad sin igual</h3>
+          <p>Las prendas más bonitas, elegantes y exclusivas al precio que mereces.</p>
+        </div>
+        <div class="razon">
+          <span class="emoji">💗</span>
+          <h3>Con amor de verdad</h3>
+          <p>Cada clienta es especial para nosotras. Te atendemos con el corazón.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- horario -->
+    <section class="tarjeta">
+      <h2>🕐 Horario de atención</h2>
+      <p class="sub">¡Te esperamos con los brazos abiertos!</p>
+      <div class="horario-grid">
+        <div class="dia-horario">
+          <h3>Lunes — Viernes</h3>
+          <p>10:00 am – 7:00 pm</p>
+        </div>
+        <div class="dia-horario">
+          <h3>Sábado</h3>
+          <p>10:00 am – 5:00 pm</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ubicación -->
+    <section class="tarjeta">
+      <h2>📍 ¿Dónde estamos?</h2>
+      <p class="direccion-texto">Calle Correos #190, Barrio Segundo, Cosoleacaque, Veracruz</p>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3768.234!2d-94.6361963!3d17.9977657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85e989e343a54db7%3A0x82cec7596b6a5654!2sMagy%20Rivera!5e0!3m2!1ses!2smx!4v1"
+        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </section>
+
+    <footer>
+      <p>© 2025 Magy Rivera Boutique &nbsp;·&nbsp; Cosoleacaque, Veracruz 🌸</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // cursor corazón
+    const cursor = document.getElementById('cursor')
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px'
+      cursor.style.top  = e.clientY + 'px'
+    })
+    document.addEventListener('mousedown', () => cursor.style.transform = 'translate(-50%,-50%) scale(1.4)')
+    document.addEventListener('mouseup',   () => cursor.style.transform = 'translate(-50%,-50%) scale(1)')
+
+    // modo noche/día
+    function cambiarTema() {
+      const html = document.documentElement
+      const btn  = document.getElementById('btnTema')
+      if (html.getAttribute('data-tema') === 'dia') {
+        html.setAttribute('data-tema', 'noche')
+        btn.textContent = '☀️'
+      } else {
+        html.setAttribute('data-tema', 'dia')
+        btn.textContent = '🌙'
+      }
+    }
+
+    // contador de visitas con localStorage
+    const key = 'magy_visitas'
+    let visitas = parseInt(localStorage.getItem(key) || '0') + 1
+    localStorage.setItem(key, visitas)
+    document.getElementById('contadorTexto').textContent = `👁️ ${visitas.toLocaleString()} visita${visitas !== 1 ? 's' : ''} a esta página`
+  </script>
+
+</body>
+</html>
