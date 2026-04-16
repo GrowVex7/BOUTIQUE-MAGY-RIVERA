@@ -55,6 +55,7 @@
             transition: background .3s, color .3s
         }
 
+        /* LOGIN */
         #loginScreen {
             position: fixed;
             inset: 0;
@@ -176,6 +177,7 @@
             display: none
         }
 
+        /* LAYOUT */
         #adminApp {
             display: none
         }
@@ -340,6 +342,7 @@
             display: block
         }
 
+        /* STATS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -403,6 +406,7 @@
             color: var(--texto)
         }
 
+        /* FORM */
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -481,6 +485,11 @@
             background: var(--rosa-deep)
         }
 
+        .btn-rosa:disabled {
+            opacity: .6;
+            cursor: not-allowed
+        }
+
         .btn-ghost {
             background: transparent;
             color: var(--texto);
@@ -498,7 +507,7 @@
             color: var(--rosa)
         }
 
-        /* Image upload */
+        /* IMAGE UPLOAD */
         .img-upload-wrap {
             border: 2px dashed var(--borde);
             border-radius: 12px;
@@ -552,7 +561,59 @@
             color: var(--rosa)
         }
 
-        /* Fotos boutique */
+        .upload-progress {
+            height: 4px;
+            background: var(--borde);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none
+        }
+
+        .upload-progress-bar {
+            height: 100%;
+            background: var(--rosa);
+            border-radius: 2px;
+            transition: width .3s;
+            width: 0
+        }
+
+        /* CATS */
+        .cat-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--rosa-soft);
+            color: var(--rosa);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: .8rem;
+            font-weight: 600;
+            margin: 3px
+        }
+
+        .cat-tag button {
+            background: none;
+            border: none;
+            color: var(--rosa-deep);
+            cursor: pointer;
+            font-size: .9rem;
+            line-height: 1;
+            padding: 0 0 0 2px;
+            font-weight: 700
+        }
+
+        .cat-tag button:hover {
+            color: var(--danger)
+        }
+
+        .cats-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px 0
+        }
+
+        /* FOTOS */
         .foto-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -596,54 +657,7 @@
             background: var(--danger)
         }
 
-        .foto-tag {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, .5);
-            color: white;
-            font-size: .7rem;
-            padding: 4px 8px;
-            font-family: 'Jost', sans-serif
-        }
-
-        /* Cats */
-        .cat-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--rosa-soft);
-            color: var(--rosa);
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: .8rem;
-            font-weight: 600;
-            margin: 3px
-        }
-
-        .cat-tag button {
-            background: none;
-            border: none;
-            color: var(--rosa-deep);
-            cursor: pointer;
-            font-size: .9rem;
-            line-height: 1;
-            padding: 0 0 0 2px;
-            font-weight: 700
-        }
-
-        .cat-tag button:hover {
-            color: var(--danger)
-        }
-
-        .cats-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 10px 0
-        }
-
-        /* Table */
+        /* TABLE */
         .table-wrap {
             overflow-x: auto
         }
@@ -777,7 +791,7 @@
             color: var(--danger)
         }
 
-        /* Modal */
+        /* MODAL EDIT */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -834,7 +848,208 @@
             margin-top: 8px
         }
 
-        /* Toast */
+        /* NOTIFICACIÓN MODAL (popup bonito) */
+        #notifOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            background: rgba(42, 13, 26, .45);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s
+        }
+
+        #notifOverlay.open {
+            opacity: 1;
+            pointer-events: all
+        }
+
+        .notif-box {
+            background: var(--surface);
+            border-radius: 24px;
+            width: min(380px, 100%);
+            padding: 36px 32px;
+            text-align: center;
+            transform: scale(.9) translateY(16px);
+            transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, .25)
+        }
+
+        #notifOverlay.open .notif-box {
+            transform: scale(1) translateY(0)
+        }
+
+        .notif-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px
+        }
+
+        .notif-icon svg {
+            width: 30px;
+            height: 30px
+        }
+
+        .notif-icon.success {
+            background: #e0f5ea
+        }
+
+        .notif-icon.success svg {
+            stroke: #2d8a5e
+        }
+
+        .notif-icon.error {
+            background: #fde8e8
+        }
+
+        .notif-icon.error svg {
+            stroke: #c03030
+        }
+
+        .notif-icon.warning {
+            background: #fff3d6
+        }
+
+        .notif-icon.warning svg {
+            stroke: #c47a00
+        }
+
+        .notif-icon.info {
+            background: var(--rosa-soft)
+        }
+
+        .notif-icon.info svg {
+            stroke: var(--rosa)
+        }
+
+        .notif-titulo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--texto)
+        }
+
+        .notif-msg {
+            font-size: .9rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 24px
+        }
+
+        .notif-btn {
+            background: var(--rosa);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 32px;
+            font-family: 'Jost', sans-serif;
+            font-size: .9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s
+        }
+
+        .notif-btn:hover {
+            background: var(--rosa-deep)
+        }
+
+        .notif-btn.success-btn {
+            background: #2d8a5e
+        }
+
+        .notif-btn.success-btn:hover {
+            background: #1f6244
+        }
+
+        .notif-btn.warning-btn {
+            background: #c47a00
+        }
+
+        .notif-btn.warning-btn:hover {
+            background: #a06200
+        }
+
+        /* SPINNER overlay */
+        #spinnerOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 8000;
+            background: rgba(42, 13, 26, .35);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        #spinnerOverlay.show {
+            display: flex
+        }
+
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(192, 48, 106, .2);
+            border-top-color: var(--rosa);
+            border-radius: 50%;
+            animation: spin .8s linear infinite
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .spinner-msg {
+            color: white;
+            font-size: .9rem;
+            font-weight: 500;
+            letter-spacing: .04em
+        }
+
+        /* PROMOS */
+        .promo-lista-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--borde);
+            flex-wrap: wrap
+        }
+
+        .promo-thumb {
+            width: 72px;
+            height: 72px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--rosa-soft)
+        }
+
+        .promo-thumb-ph {
+            width: 72px;
+            height: 72px;
+            border-radius: 10px;
+            background: var(--rosa-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        /* TOAST pequeño (feedback rápido) */
         #toast {
             position: fixed;
             bottom: 24px;
@@ -864,6 +1079,10 @@
             background: var(--warning)
         }
 
+        #toast.error {
+            background: var(--danger)
+        }
+
         @media(max-width:768px) {
             .layout {
                 grid-template-columns: 1fr
@@ -887,9 +1106,17 @@
 
 <body>
 
+    <!-- LOGIN -->
     <div id="loginScreen">
         <div class="login-card">
-            <div id="loginLogoWrap"></div>
+            <div id="loginLogoWrap">
+                <div class="login-logo-placeholder">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                    </svg>
+                </div>
+            </div>
             <div class="login-title">Panel Admin</div>
             <div class="login-sub">Magy Rivera Boutique</div>
             <input class="login-input" type="text" id="loginUser" placeholder="Usuario"
@@ -901,8 +1128,10 @@
         </div>
     </div>
 
+    <!-- ADMIN APP -->
     <div id="adminApp">
         <div class="layout">
+
             <aside class="sidebar">
                 <div class="sidebar-brand">
                     <div class="brand-name">Magy <em>Rivera</em></div>
@@ -919,6 +1148,8 @@
                     <div class="nav-group-label" style="margin-top:8px">Configuración</div>
                     <button class="nav-item" onclick="goTo('categorias',this)"><span class="icon">🏷️</span>
                         Categorías</button>
+                    <button class="nav-item" onclick="goTo('promociones',this)"><span class="icon">🎁</span>
+                        Promociones</button>
                     <button class="nav-item" onclick="goTo('fotos',this)"><span class="icon">🖼️</span> Fotos
                         Boutique</button>
                     <button class="nav-item" onclick="goTo('catalogo',this)"><span class="icon">📋</span> Vista
@@ -939,7 +1170,7 @@
                         <p class="page-sub">Resumen general de tu boutique</p>
                     </div>
                     <div class="stats-grid" id="statsGrid"></div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap">
                         <div class="card">
                             <div class="card-title">Productos por categoría</div>
                             <div id="catStats"></div>
@@ -953,8 +1184,8 @@
                                     onclick="window.open('index.html','_blank')">Ver página pública</button>
                                 <button class="btn-ghost" style="width:100%" onclick="goTo('productos',null)">Gestionar
                                     catálogo</button>
-                                <button class="btn-ghost" style="width:100%" onclick="goTo('fotos',null)">Gestionar
-                                    fotos boutique</button>
+                                <button class="btn-ghost" style="width:100%"
+                                    onclick="goTo('promociones',null)">Gestionar promociones</button>
                             </div>
                         </div>
                     </div>
@@ -1023,29 +1254,29 @@
                                 <input class="form-input" type="number" id="fAntes" placeholder="500" />
                             </div>
                         </div>
-                        <!-- IMAGEN -->
                         <div class="form-group">
                             <label class="form-label">Imagen del producto</label>
-                            <div class="img-upload-wrap" id="fImgWrap">
+                            <div class="img-upload-wrap">
                                 <input type="file" accept="image/*"
-                                    onchange="previewImg(this,'fImgPreview','fImgB64')" />
-                                <div class="img-upload-icon">
-                                    <svg viewBox="0 0 24 24">
+                                    onchange="seleccionarImg(this,'fImgPreview','fImgFile')" />
+                                <div class="img-upload-icon"><svg viewBox="0 0 24 24">
                                         <rect x="3" y="3" width="18" height="18" rx="2" />
                                         <circle cx="8.5" cy="8.5" r="1.5" />
                                         <polyline points="21 15 16 10 5 21" />
-                                    </svg>
-                                </div>
-                                <div class="img-upload-txt">Haz clic o arrastra una imagen<br><strong>JPG, PNG,
-                                        WEBP</strong></div>
+                                    </svg></div>
+                                <div class="img-upload-txt">Toca aquí para subir foto<br><strong>JPG, PNG, WEBP — desde
+                                        celular o PC</strong></div>
                                 <img id="fImgPreview" class="img-preview" />
+                                <div class="upload-progress" id="fImgProgress">
+                                    <div class="upload-progress-bar" id="fImgBar"></div>
+                                </div>
                             </div>
-                            <input type="hidden" id="fImgB64" />
+                            <input type="hidden" id="fImgFile" />
                             <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
                                 <span style="font-size:.75rem;color:var(--muted)">— o pega una URL —</span>
                                 <input class="form-input" id="fImgUrl" placeholder="https://..."
                                     style="flex:1;padding:8px 12px;font-size:.85rem"
-                                    oninput="previewUrl(this,'fImgPreview','fImgB64')" />
+                                    oninput="previewUrl(this,'fImgPreview')" />
                             </div>
                         </div>
                         <div style="display:flex;gap:1.5rem;margin-bottom:18px">
@@ -1053,7 +1284,7 @@
                             <label class="form-check"><input type="checkbox" id="fNuevo" /> Marcar como nuevo</label>
                         </div>
                         <div style="display:flex;gap:10px">
-                            <button class="btn-rosa" onclick="agregarProducto()">Guardar prenda</button>
+                            <button class="btn-rosa" id="btnAgregar" onclick="agregarProducto()">Guardar prenda</button>
                             <button class="btn-ghost" onclick="limpiarForm()">Limpiar</button>
                         </div>
                     </div>
@@ -1079,15 +1310,85 @@
                     </div>
                 </div>
 
+                <!-- PROMOCIONES -->
+                <div class="tab-page" id="page-promociones">
+                    <div class="page-header">
+                        <h1 class="page-title">Gestión de <em>Promociones</em></h1>
+                        <p class="page-sub">Crea y edita las promociones que aparecen en la página principal.</p>
+                    </div>
+                    <div class="card" style="max-width:680px;margin-bottom:2rem">
+                        <div class="card-title" id="promoFormTitle">Nueva Promoción</div>
+                        <input type="hidden" id="promoEditId" />
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Título</label>
+                                <input class="form-input" id="promoTitulo" placeholder="Ej: Descuento de Sábado" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Badge / Descuento</label>
+                                <input class="form-input" id="promoDescuento" placeholder="Ej: 16% OFF · 2x1" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Descripción</label>
+                            <input class="form-input" id="promoDesc"
+                                placeholder="Ej: Este sábado 10 de mayo en toda la tienda" />
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Fecha / Vigencia</label>
+                                <input class="form-input" id="promoFecha" placeholder="Ej: Sábado 10 de mayo" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Estado</label>
+                                <select class="form-input" id="promoActiva">
+                                    <option value="1">Activa — se muestra en la web</option>
+                                    <option value="0">Inactiva — oculta</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Imagen de la promoción</label>
+                            <div class="img-upload-wrap">
+                                <input type="file" accept="image/*,video/*" onchange="seleccionarPromoMedia(this)" />
+                                <div class="img-upload-icon"><svg viewBox="0 0 24 24">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                                        <circle cx="8.5" cy="8.5" r="1.5" />
+                                        <polyline points="21 15 16 10 5 21" />
+                                    </svg></div>
+                                <div class="img-upload-txt">Imagen o Video<br><strong>JPG, PNG, MP4</strong></div>
+                                <img id="promoImgPreview" class="img-preview" />
+                                <video id="promoVidPreview"
+                                    style="display:none;width:100%;max-height:160px;border-radius:8px;margin-top:10px"
+                                    controls muted playsinline></video>
+                                <div class="upload-progress" id="promoProgress">
+                                    <div class="upload-progress-bar" id="promoBar"></div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="promoMediaUrl2" />
+                            <input type="hidden" id="promoMediaTipo" />
+                            <input class="form-input" id="promoMediaUrlManual"
+                                placeholder="O pega una URL de imagen/video" style="margin-top:8px;font-size:.85rem"
+                                oninput="previewPromoUrl(this)" />
+                        </div>
+                        <div style="display:flex;gap:10px;margin-top:8px">
+                            <button class="btn-rosa" id="btnGuardarPromo" onclick="guardarPromo()">Guardar
+                                promoción</button>
+                            <button class="btn-ghost" onclick="cancelarPromo()">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Promociones guardadas</div>
+                        <div id="promoLista"></div>
+                    </div>
+                </div>
+
                 <!-- FOTOS BOUTIQUE -->
                 <div class="tab-page" id="page-fotos">
                     <div class="page-header">
                         <h1 class="page-title">Fotos de la <em>Boutique</em></h1>
-                        <p class="page-sub">Logo, foto de la imagen de la boutique y galería. Se muestran en la página
-                            principal.</p>
+                        <p class="page-sub">Logo, imagen principal y galería. Se suben a Cloudinary automáticamente.</p>
                     </div>
-
-                    <!-- Logo -->
                     <div class="card" style="max-width:560px">
                         <div class="card-title">Logo de la boutique</div>
                         <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
@@ -1103,20 +1404,17 @@
                             <div style="flex:1">
                                 <div class="img-upload-wrap">
                                     <input type="file" accept="image/*" onchange="subirFotoBoutique(this,'logo')" />
-                                    <div class="img-upload-txt">Subir logo<br><strong>JPG, PNG</strong> recomendado
-                                        circular</div>
+                                    <div class="img-upload-txt">Subir logo<br><strong>JPG, PNG</strong></div>
                                 </div>
                                 <button class="btn-ghost" style="margin-top:8px;padding:6px 14px;font-size:.8rem"
                                     onclick="eliminarFotoBoutique('logo')">Quitar logo</button>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Imagen de la boutique (mamá) -->
                     <div class="card" style="max-width:560px">
                         <div class="card-title">Imagen de la boutique</div>
-                        <p style="font-size:.85rem;color:var(--muted);margin-bottom:16px">La foto que aparece como
-                            "cara" de la boutique en la página principal.</p>
+                        <p style="font-size:.85rem;color:var(--muted);margin-bottom:16px">La foto principal que aparece
+                            en la página.</p>
                         <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
                             <div id="facePreviewWrap"
                                 style="width:100px;height:100px;border-radius:50%;overflow:hidden;background:var(--rosa-soft);display:flex;align-items:center;justify-content:center;border:3px solid var(--borde);flex-shrink:0">
@@ -1129,13 +1427,12 @@
                             <div style="flex:1">
                                 <div class="img-upload-wrap">
                                     <input type="file" accept="image/*" onchange="subirFotoBoutique(this,'face')" />
-                                    <div class="img-upload-txt">Subir foto<br><strong>JPG, PNG</strong> recomendado
-                                        cuadrada</div>
+                                    <div class="img-upload-txt">Subir foto<br><strong>JPG, PNG</strong></div>
                                 </div>
                                 <input class="form-input" id="faceNombre" placeholder="Nombre (ej: Magy Rivera)"
                                     style="margin-top:8px;font-size:.88rem"
                                     oninput="guardarDatoBoutique('faceName',this.value)" />
-                                <input class="form-input" id="faceLema" placeholder="Lema o cargo (ej: Fundadora)"
+                                <input class="form-input" id="faceLema" placeholder="Cargo (ej: Fundadora)"
                                     style="margin-top:6px;font-size:.88rem"
                                     oninput="guardarDatoBoutique('faceLema',this.value)" />
                                 <button class="btn-ghost" style="margin-top:8px;padding:6px 14px;font-size:.8rem"
@@ -1143,8 +1440,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Galería -->
                     <div class="card">
                         <div class="card-title">
                             Galería de la boutique
@@ -1154,8 +1449,8 @@
                                 <span class="btn-rosa" style="font-size:.82rem;padding:8px 16px">+ Agregar fotos</span>
                             </label>
                         </div>
-                        <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px">Estas fotos se muestran en la
-                            sección de galería de la página principal.</p>
+                        <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px">Aparecen en la sección galería
+                            de la página principal.</p>
                         <div class="foto-grid" id="galeriaGrid"></div>
                     </div>
                 </div>
@@ -1190,45 +1485,38 @@
             <div class="modal-sub">Modifica los datos del producto</div>
             <input type="hidden" id="editId" />
             <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Nombre</label>
-                    <input class="form-input" id="editNombre" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Categoría</label>
-                    <select class="form-input" id="editCat"></select>
-                </div>
+                <div class="form-group"><label class="form-label">Nombre</label><input class="form-input"
+                        id="editNombre" /></div>
+                <div class="form-group"><label class="form-label">Categoría</label><select class="form-input"
+                        id="editCat"></select></div>
             </div>
-            <div class="form-group">
-                <label class="form-label">Descripción</label>
-                <input class="form-input" id="editDesc" />
-            </div>
+            <div class="form-group"><label class="form-label">Descripción</label><input class="form-input"
+                    id="editDesc" /></div>
             <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Precio</label>
-                    <input class="form-input" type="number" id="editPrecio" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Precio anterior</label>
-                    <input class="form-input" type="number" id="editAntes" placeholder="Dejar vacío si no aplica" />
-                </div>
+                <div class="form-group"><label class="form-label">Precio</label><input class="form-input" type="number"
+                        id="editPrecio" /></div>
+                <div class="form-group"><label class="form-label">Precio anterior</label><input class="form-input"
+                        type="number" id="editAntes" placeholder="Dejar vacío si no aplica" /></div>
             </div>
-            <!-- Imagen edit -->
             <div class="form-group">
                 <label class="form-label">Imagen del producto</label>
-                <div class="img-upload-wrap" id="editImgWrap">
-                    <input type="file" accept="image/*" onchange="previewImg(this,'editImgPreview','editImgB64')" />
+                <div class="img-upload-wrap">
+                    <input type="file" accept="image/*"
+                        onchange="seleccionarImg(this,'editImgPreview','editImgFile')" />
                     <div class="img-upload-icon"><svg viewBox="0 0 24 24">
                             <rect x="3" y="3" width="18" height="18" rx="2" />
                             <circle cx="8.5" cy="8.5" r="1.5" />
                             <polyline points="21 15 16 10 5 21" />
                         </svg></div>
-                    <div class="img-upload-txt">Haz clic para cambiar imagen</div>
+                    <div class="img-upload-txt">Toca para cambiar imagen</div>
                     <img id="editImgPreview" class="img-preview" />
+                    <div class="upload-progress" id="editImgProgress">
+                        <div class="upload-progress-bar" id="editImgBar"></div>
+                    </div>
                 </div>
-                <input type="hidden" id="editImgB64" />
+                <input type="hidden" id="editImgFile" />
                 <input class="form-input" id="editImgUrl" placeholder="O pega una URL de imagen"
-                    style="margin-top:8px;font-size:.85rem" oninput="previewUrl(this,'editImgPreview','editImgB64')" />
+                    style="margin-top:8px;font-size:.85rem" oninput="previewUrl(this,'editImgPreview')" />
             </div>
             <div style="display:flex;gap:1.5rem;margin-bottom:18px">
                 <label class="form-check"><input type="checkbox" id="editOferta" /> Oferta</label>
@@ -1236,69 +1524,204 @@
             </div>
             <div class="modal-actions">
                 <button class="btn-ghost" onclick="closeModal()">Cancelar</button>
-                <button class="btn-rosa" onclick="guardarEdit()">Guardar cambios</button>
+                <button class="btn-rosa" id="btnGuardarEdit" onclick="guardarEdit()">Guardar cambios</button>
             </div>
         </div>
     </div>
 
+    <!-- NOTIFICACIÓN MODAL -->
+    <div id="notifOverlay">
+        <div class="notif-box">
+            <div class="notif-icon" id="notifIcon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    id="notifIconSvg"></svg>
+            </div>
+            <div class="notif-titulo" id="notifTitulo"></div>
+            <div class="notif-msg" id="notifMsg"></div>
+            <button class="notif-btn" id="notifBtn" onclick="cerrarNotif()">Entendido</button>
+        </div>
+    </div>
+
+    <!-- SPINNER -->
+    <div id="spinnerOverlay">
+        <div class="spinner"></div>
+        <div class="spinner-msg" id="spinnerMsg">Subiendo imagen...</div>
+    </div>
+
     <div id="toast"></div>
 
-    <script>
+    <!-- FIREBASE SDKs -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js'
+        import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc, onSnapshot, writeBatch } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js'
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXIMM503RQfUny56R4Ax20lbfnAOJlL08",
+            authDomain: "boutique-magy-rivera.firebaseapp.com",
+            projectId: "boutique-magy-rivera",
+            storageBucket: "boutique-magy-rivera.firebasestorage.app",
+            messagingSenderId: "889885372669",
+            appId: "1:889885372669:web:7e538eabab0fe64ca88e94"
+        }
+
+        const app = initializeApp(firebaseConfig)
+        const db = getFirestore(app)
+
+        // ── CLOUDINARY CONFIG ──
+        const CLD_CLOUD = 'dvb6yznjd'
+        const CLD_PRESET = 'magy_boutique'
+        const CLD_URL = `https://api.cloudinary.com/v1_1/${CLD_CLOUD}/auto/upload`
+
+        // ── ESTADO ──
         const CREDS = { user: 'magy', pass: 'magyrivera12' }
-        const LS_PROD = 'magy_productos', LS_CATS = 'magy_categorias', LS_DARK = 'magy_dark', LS_BOUTIQUE = 'magy_boutique'
         const DEFAULT_CATS = ['Vestidos', 'Blusas', 'Conjuntos', 'Pantalones & Faldas', 'Lencería', 'Accesorios', 'Bolsas & Regalos', 'Skincare & Haircare', 'Perfumes']
 
-        let productos = JSON.parse(localStorage.getItem(LS_PROD) || '[]')
-        let categorias = JSON.parse(localStorage.getItem(LS_CATS) || JSON.stringify(DEFAULT_CATS))
-        let boutique = JSON.parse(localStorage.getItem(LS_BOUTIQUE) || '{}')
-        let nextId = productos.length ? Math.max(...productos.map(p => p.id)) + 1 : 1
+        let productos = []
+        let categorias = [...DEFAULT_CATS]
+        let boutique = {}
+        let promociones = []
+        // Archivos seleccionados (pendientes de subir)
+        let pendingFiles = {}  // key -> File object
 
-        function save() { localStorage.setItem(LS_PROD, JSON.stringify(productos)); localStorage.setItem(LS_CATS, JSON.stringify(categorias)); localStorage.setItem(LS_BOUTIQUE, JSON.stringify(boutique)) }
+        // ── CLOUDINARY UPLOAD ──
+        async function subirACloudinary(file, progressBarId, progressWrapId) {
+            return new Promise((resolve, reject) => {
+                const fd = new FormData()
+                fd.append('file', file)
+                fd.append('upload_preset', CLD_PRESET)
+                const xhr = new XMLHttpRequest()
+                xhr.open('POST', CLD_URL)
+                // Progreso
+                if (progressBarId) {
+                    const wrap = document.getElementById(progressWrapId)
+                    const bar = document.getElementById(progressBarId)
+                    if (wrap) wrap.style.display = 'block'
+                    xhr.upload.onprogress = e => {
+                        if (e.lengthComputable && bar) bar.style.width = Math.round(e.loaded / e.total * 100) + '%'
+                    }
+                }
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        const res = JSON.parse(xhr.responseText)
+                        resolve(res.secure_url)
+                    } else {
+                        reject(new Error('Error Cloudinary: ' + xhr.status))
+                    }
+                }
+                xhr.onerror = () => reject(new Error('Sin conexión'))
+                xhr.send(fd)
+            })
+        }
 
-        // ── DARK ──
-        function toggleDark() {
+        // ── NOTIFICACIÓN MODAL ──
+        window.notif = function (tipo, titulo, msg, btnClass) {
+            const icons = {
+                success: '<polyline points="20 6 9 17 4 12"/>',
+                error: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+                warning: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+                info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'
+            }
+            document.getElementById('notifIcon').className = 'notif-icon ' + tipo
+            document.getElementById('notifIconSvg').innerHTML = icons[tipo] || icons.info
+            document.getElementById('notifTitulo').textContent = titulo
+            document.getElementById('notifMsg').textContent = msg
+            const btn = document.getElementById('notifBtn')
+            btn.className = 'notif-btn ' + (btnClass || tipo + '-btn')
+            document.getElementById('notifOverlay').classList.add('open')
+        }
+        window.cerrarNotif = function () {
+            document.getElementById('notifOverlay').classList.remove('open')
+        }
+
+        function spinner(show, msg) {
+            const el = document.getElementById('spinnerOverlay')
+            if (show) { document.getElementById('spinnerMsg').textContent = msg || 'Procesando...'; el.classList.add('show') }
+            else el.classList.remove('show')
+        }
+
+        window.toast = function (msg, type = '') {
+            const t = document.getElementById('toast')
+            t.textContent = msg; t.className = 'toast show ' + type
+            setTimeout(() => t.classList.remove('show'), 2800)
+        }
+
+        // ── DARK MODE ──
+        window.toggleDark = function () {
             document.body.classList.toggle('dark')
             const d = document.body.classList.contains('dark')
-            localStorage.setItem(LS_DARK, d)
+            localStorage.setItem('magy_dark', d)
             document.getElementById('darkBtn').textContent = d ? '☀️ Modo claro' : '🌙 Modo oscuro'
         }
-        if (localStorage.getItem(LS_DARK) === 'true') { document.body.classList.add('dark') }
+        if (localStorage.getItem('magy_dark') === 'true') { document.body.classList.add('dark') }
 
         // ── AUTH ──
-        function login() {
-            const u = document.getElementById('loginUser').value, p = document.getElementById('loginPass').value
+        window.login = function () {
+            const u = document.getElementById('loginUser').value
+            const p = document.getElementById('loginPass').value
             if (u === CREDS.user && p === CREDS.pass) {
                 document.getElementById('loginScreen').style.display = 'none'
                 document.getElementById('adminApp').style.display = 'block'
                 init()
-            } else { document.getElementById('loginErr').style.display = 'block' }
+            } else {
+                document.getElementById('loginErr').style.display = 'block'
+            }
         }
-        function logout() {
+        window.logout = function () {
             document.getElementById('adminApp').style.display = 'none'
             document.getElementById('loginScreen').style.display = 'flex'
             document.getElementById('loginUser').value = ''
             document.getElementById('loginPass').value = ''
         }
 
-        // Mostrar logo en login
-        function renderLoginLogo() {
-            const wrap = document.getElementById('loginLogoWrap')
-            if (boutique.logo) {
-                wrap.innerHTML = `<img src="${boutique.logo}" class="login-logo"/>`
-            } else {
-                wrap.innerHTML = `<div class="login-logo-placeholder"><svg viewBox="0 0 24 24"><path d="M20 10l-8 14h8v28h24V24h8l-8-14"/><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>`
+        // ── FIRESTORE HELPERS ──
+        async function fsGet(colName) {
+            const snap = await getDocs(collection(db, colName))
+            return snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        }
+        async function fsSet(colName, id, data) {
+            await setDoc(doc(db, colName, String(id)), data)
+        }
+        async function fsDel(colName, id) {
+            await deleteDoc(doc(db, colName, String(id)))
+        }
+
+        // ── CARGAR DATOS ──
+        async function cargarDatos() {
+            spinner(true, 'Cargando datos...')
+            try {
+                const [prods, cats, bout, promos] = await Promise.all([
+                    fsGet('productos'),
+                    fsGet('categorias'),
+                    fsGet('boutique'),
+                    fsGet('promociones')
+                ])
+                productos = prods.sort((a, b) => (a.orden || 0) - (b.orden || 0))
+                categorias = cats.length ? cats.map(c => c.nombre) : [...DEFAULT_CATS]
+                boutique = bout[0] || {}
+                promociones = promos
+                // Si no hay categorías en Firestore, guardar las default
+                if (!cats.length) {
+                    await Promise.all(DEFAULT_CATS.map((c, i) => fsSet('categorias', i + 1, { nombre: c })))
+                }
+            } catch (e) {
+                notif('error', 'Error de conexión', 'No se pudo conectar con Firebase. Revisa tu internet e intenta de nuevo.')
+            } finally {
+                spinner(false)
             }
         }
 
         // ── NAV ──
-        function goTo(page, btn) {
+        window.goTo = function (page, btn) {
             document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'))
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'))
             document.getElementById('page-' + page).classList.add('active')
             if (btn) btn.classList.add('active')
-            else document.querySelectorAll('.nav-item').forEach(b => { if (b.onclick && b.onclick.toString().includes("'" + page + "'")) b.classList.add('active') })
+            else document.querySelectorAll('.nav-item').forEach(b => {
+                if (b.onclick && b.onclick.toString().includes("'" + page + "'")) b.classList.add('active')
+            })
             renderPage(page)
         }
+
         function renderPage(p) {
             if (p === 'dashboard') renderDash()
             else if (p === 'productos') renderTabla()
@@ -1306,6 +1729,7 @@
             else if (p === 'categorias') renderCats()
             else if (p === 'agregar') { poblarSelectCat('fCat') }
             else if (p === 'fotos') renderFotos()
+            else if (p === 'promociones') renderPromos()
         }
 
         // ── DASHBOARD ──
@@ -1316,7 +1740,8 @@
                 document.getElementById('catStats').innerHTML = '<div style="color:var(--muted);font-size:.87rem">Sin datos</div>'
                 return
             }
-            const ofertas = productos.filter(p => p.oferta).length, nuevos = productos.filter(p => p.nuevo).length
+            const ofertas = productos.filter(p => p.oferta).length
+            const nuevos = productos.filter(p => p.nuevo).length
             const avg = Math.round(productos.reduce((s, p) => s + p.precio, 0) / total)
             document.getElementById('statsGrid').innerHTML = `
       <div class="stat-card"><div class="stat-label">Total prendas</div><div class="stat-val">${total}</div><div class="stat-change up">Catálogo activo</div></div>
@@ -1338,7 +1763,7 @@
         // ── TABLA ──
         function renderTabla() {
             const q = (document.getElementById('searchInput')?.value || '').toLowerCase()
-            const filtered = productos.filter(p => p.nombre.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q))
+            const filtered = productos.filter(p => p.nombre.toLowerCase().includes(q) || (p.cat || '').toLowerCase().includes(q))
             document.getElementById('prodCount').textContent = `${filtered.length} de ${productos.length} prendas`
             if (!filtered.length) {
                 document.getElementById('tablaBody').innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">${productos.length ? 'Sin resultados' : 'Sin productos aún.'}</td></tr>`
@@ -1347,11 +1772,11 @@
             document.getElementById('tablaBody').innerHTML = filtered.map(p => `
       <tr>
         <td>${p.img ? `<img src="${p.img}" class="td-img"/>` : `<div class="td-img-ph"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`}</td>
-        <td><div class="td-name">${p.nombre}</div><div style="font-size:.75rem;color:var(--muted)">${p.desc.substring(0, 40)}...</div></td>
+        <td><div class="td-name">${p.nombre}</div><div style="font-size:.75rem;color:var(--muted)">${(p.desc || '').substring(0, 40)}...</div></td>
         <td><span style="font-size:.8rem;color:var(--muted)">${p.cat || '—'}</span></td>
         <td class="td-price">$${p.precio}${p.antes ? `<div style="font-size:.72rem;color:var(--muted);text-decoration:line-through">$${p.antes}</div>` : ''}</td>
         <td>${p.oferta ? '<span class="badge badge-oferta">Oferta</span>' : ''}${p.nuevo ? '<span class="badge badge-nuevo">Nuevo</span>' : ''}${!p.oferta && !p.nuevo ? '<span class="badge badge-normal">Normal</span>' : ''}</td>
-        <td><div class="action-btns"><button class="edit-btn" onclick="openEdit(${p.id})">Editar</button><button class="del-btn" onclick="eliminar(${p.id})">Eliminar</button></div></td>
+        <td><div class="action-btns"><button class="edit-btn" onclick="openEdit('${p.id}')">Editar</button><button class="del-btn" onclick="eliminar('${p.id}')">Eliminar</button></div></td>
       </tr>`).join('')
         }
 
@@ -1378,91 +1803,68 @@
             document.getElementById('catsWrap').innerHTML = categorias.map((c, i) => `
       <span class="cat-tag">${c}<button onclick="eliminarCat(${i})">×</button></span>`).join('')
         }
-        function agregarCat() {
+
+        window.agregarCat = async function () {
             const v = document.getElementById('nuevaCat').value.trim()
-            if (!v) { toast('Escribe el nombre', 'warning'); return }
-            if (categorias.includes(v)) { toast('Ya existe', 'warning'); return }
-            categorias.push(v); save(); document.getElementById('nuevaCat').value = ''; renderCats(); toast('Categoría agregada', 'success')
+            if (!v) { notif('warning', 'Campo vacío', 'Escribe el nombre de la categoría primero.'); return }
+            if (categorias.includes(v)) { notif('warning', 'Ya existe', `La categoría "${v}" ya está en la lista.`); return }
+            spinner(true, 'Guardando categoría...')
+            try {
+                const id = Date.now()
+                await fsSet('categorias', id, { nombre: v })
+                categorias.push(v)
+                document.getElementById('nuevaCat').value = ''
+                renderCats()
+                notif('success', '¡Categoría agregada!', `"${v}" ya aparece en el catálogo y en el formulario de prendas.`)
+            } catch (e) {
+                notif('error', 'Error al guardar', 'No se pudo guardar la categoría. Revisa tu conexión.')
+            } finally { spinner(false) }
         }
-        function eliminarCat(i) {
-            if (!confirm(`¿Eliminar "${categorias[i]}"?`)) return
-            categorias.splice(i, 1); save(); renderCats(); toast('Eliminada')
+
+        window.eliminarCat = async function (i) {
+            const cat = categorias[i]
+            const enUso = productos.filter(p => p.cat === cat).length
+            const msg = enUso ? `¿Eliminar "${cat}"? Hay ${enUso} prenda(s) con esta categoría.` : `¿Eliminar la categoría "${cat}"?`
+            if (!confirm(msg)) return
+            spinner(true, 'Eliminando...')
+            try {
+                // Buscar doc en Firestore por nombre
+                const snap = await getDocs(collection(db, 'categorias'))
+                const docToDelete = snap.docs.find(d => d.data().nombre === cat)
+                if (docToDelete) await fsDel('categorias', docToDelete.id)
+                categorias.splice(i, 1)
+                renderCats()
+                toast('Categoría eliminada')
+            } catch (e) {
+                notif('error', 'Error', 'No se pudo eliminar. Intenta de nuevo.')
+            } finally { spinner(false) }
         }
+
         function poblarSelectCat(id) {
             const sel = document.getElementById(id), cur = sel.value
             sel.innerHTML = '<option value="">Seleccionar categoría</option>' + categorias.map(c => `<option${cur === c ? ' selected' : ''}>${c}</option>`).join('')
         }
 
-        // ── FOTOS BOUTIQUE ──
-        function renderFotos() {
-            // logo preview
-            const lw = document.getElementById('logoPreviewWrap')
-            if (boutique.logo) lw.innerHTML = `<img src="${boutique.logo}" style="width:100%;height:100%;object-fit:cover"/>`
-            // face preview
-            const fw = document.getElementById('facePreviewWrap')
-            if (boutique.face) fw.innerHTML = `<img src="${boutique.face}" style="width:100%;height:100%;object-fit:cover"/>`
-            if (boutique.faceName) document.getElementById('faceNombre').value = boutique.faceName
-            if (boutique.faceLema) document.getElementById('faceLema').value = boutique.faceLema
-            // galeria
-            const galeria = boutique.galeria || []
-            document.getElementById('galeriaGrid').innerHTML = galeria.length
-                ? galeria.map((g, i) => `<div class="foto-item"><img src="${g.src}"/><div class="foto-tag">${g.label || ''}</div><button class="foto-del" onclick="eliminarGaleria(${i})">×</button></div>`).join('')
-                : '<div style="color:var(--muted);font-size:.85rem;padding:20px 0">Sin fotos aún. Agrega fotos de la boutique.</div>'
-        }
-
-        function subirFotoBoutique(input, tipo) {
+        // ── SELECCIONAR IMAGEN (preview local, no sube aún) ──
+        window.seleccionarImg = function (input, previewId, fileKey) {
             const file = input.files[0]; if (!file) return
+            pendingFiles[fileKey] = file
             const reader = new FileReader()
             reader.onload = e => {
-                boutique[tipo] = e.target.result; save(); renderFotos()
-                toast(`${tipo === 'logo' ? 'Logo' : 'Foto'} actualizada`, 'success')
+                const img = document.getElementById(previewId)
+                img.src = e.target.result; img.style.display = 'block'
             }
             reader.readAsDataURL(file)
         }
-        function eliminarFotoBoutique(tipo) {
-            delete boutique[tipo]; save(); renderFotos()
-        }
-        function guardarDatoBoutique(key, val) {
-            boutique[key] = val; save()
-        }
-        function agregarGaleria(input) {
-            const files = [...input.files]
-            const galeria = boutique.galeria || []
-            let done = 0
-            files.forEach(file => {
-                const r = new FileReader()
-                r.onload = e => {
-                    galeria.push({ src: e.target.result, label: '' })
-                    done++
-                    if (done === files.length) { boutique.galeria = galeria; save(); renderFotos(); toast(`${files.length} foto(s) agregada(s)`, 'success') }
-                }
-                r.readAsDataURL(file)
-            })
-        }
-        function eliminarGaleria(i) {
-            boutique.galeria.splice(i, 1); save(); renderFotos()
-        }
 
-        // ── IMAGE PREVIEW ──
-        function previewImg(input, previewId, b64Id) {
-            const file = input.files[0]; if (!file) return
-            const r = new FileReader()
-            r.onload = e => {
-                const img = document.getElementById(previewId)
-                img.src = e.target.result; img.style.display = 'block'
-                document.getElementById(b64Id).value = e.target.result
-            }
-            r.readAsDataURL(file)
-        }
-        function previewUrl(input, previewId, b64Id) {
+        window.previewUrl = function (input, previewId) {
             const url = input.value.trim(); if (!url) return
             const img = document.getElementById(previewId)
             img.src = url; img.style.display = 'block'
-            document.getElementById(b64Id).value = url
         }
 
-        // ── AGREGAR ──
-        function agregarProducto() {
+        // ── AGREGAR PRODUCTO ──
+        window.agregarProducto = async function () {
             const nombre = document.getElementById('fNombre').value.trim()
             const desc = document.getElementById('fDesc').value.trim()
             const precio = parseInt(document.getElementById('fPrecio').value)
@@ -1470,73 +1872,374 @@
             const cat = document.getElementById('fCat').value
             const oferta = document.getElementById('fOferta').checked
             const nuevo = document.getElementById('fNuevo').checked
-            const img = document.getElementById('fImgB64').value || document.getElementById('fImgUrl').value || ''
-            if (!nombre || !precio || !cat) { toast('Completa nombre, precio y categoría', 'warning'); return }
-            productos.push({ id: nextId++, nombre, desc, precio, antes, cat, oferta, nuevo, img })
-            save(); limpiarForm(); toast('Prenda agregada al catálogo', 'success'); renderDash()
+            const urlManual = document.getElementById('fImgUrl').value.trim()
+
+            if (!nombre || !precio || !cat) {
+                notif('warning', 'Faltan datos', 'Completa el nombre, precio y categoría antes de guardar.')
+                return
+            }
+
+            const btn = document.getElementById('btnAgregar')
+            btn.disabled = true
+
+            let imgUrl = urlManual
+            const file = pendingFiles['fImgFile']
+
+            try {
+                if (file && !urlManual) {
+                    spinner(true, 'Subiendo imagen a Cloudinary...')
+                    document.getElementById('fImgProgress').style.display = 'block'
+                    imgUrl = await subirACloudinary(file, 'fImgBar', 'fImgProgress')
+                    spinner(false)
+                }
+
+                spinner(true, 'Guardando prenda...')
+                const id = Date.now()
+                const prod = { id, nombre, desc, precio, antes, cat, oferta, nuevo, img: imgUrl || '' }
+                await fsSet('productos', id, prod)
+                productos.push(prod)
+                delete pendingFiles['fImgFile']
+                limpiarForm()
+                renderDash()
+                notif('success', '¡Prenda guardada!', `"${nombre}" fue agregada al catálogo exitosamente. Ya aparece en la página principal.`)
+            } catch (e) {
+                spinner(false)
+                notif('error', 'Error al guardar', `No se pudo guardar la prenda: ${e.message}`)
+            } finally {
+                spinner(false)
+                btn.disabled = false
+            }
         }
-        function limpiarForm() {
-            ['fNombre', 'fDesc', 'fPrecio', 'fAntes', 'fImgUrl'].forEach(id => document.getElementById(id).value = '')
+
+        window.limpiarForm = function () {
+            ;['fNombre', 'fDesc', 'fPrecio', 'fAntes', 'fImgUrl'].forEach(id => document.getElementById(id).value = '')
             document.getElementById('fCat').value = ''
             document.getElementById('fOferta').checked = false
             document.getElementById('fNuevo').checked = false
-            document.getElementById('fImgB64').value = ''
+            delete pendingFiles['fImgFile']
             const prev = document.getElementById('fImgPreview'); prev.src = ''; prev.style.display = 'none'
+            const prog = document.getElementById('fImgProgress'); prog.style.display = 'none'
+            const bar = document.getElementById('fImgBar'); bar.style.width = '0'
         }
 
         // ── EDIT ──
-        function openEdit(id) {
-            const p = productos.find(x => x.id === id); if (!p) return
+        window.openEdit = function (id) {
+            const p = productos.find(x => String(x.id) === String(id)); if (!p) return
             poblarSelectCat('editCat')
             document.getElementById('editId').value = id
             document.getElementById('editNombre').value = p.nombre
-            document.getElementById('editDesc').value = p.desc
+            document.getElementById('editDesc').value = p.desc || ''
             document.getElementById('editPrecio').value = p.precio
             document.getElementById('editAntes').value = p.antes || ''
             document.getElementById('editCat').value = p.cat
             document.getElementById('editOferta').checked = p.oferta
             document.getElementById('editNuevo').checked = p.nuevo
-            document.getElementById('editImgB64').value = p.img || ''
             document.getElementById('editImgUrl').value = ''
             const prev = document.getElementById('editImgPreview')
             if (p.img) { prev.src = p.img; prev.style.display = 'block' } else { prev.src = ''; prev.style.display = 'none' }
             document.getElementById('editModal').classList.add('open')
         }
-        function closeModal() { document.getElementById('editModal').classList.remove('open') }
-        function guardarEdit() {
-            const id = parseInt(document.getElementById('editId').value)
-            const p = productos.find(x => x.id === id); if (!p) return
-            p.nombre = document.getElementById('editNombre').value
-            p.desc = document.getElementById('editDesc').value
-            p.precio = parseInt(document.getElementById('editPrecio').value) || p.precio
-            p.antes = parseInt(document.getElementById('editAntes').value) || null
-            p.cat = document.getElementById('editCat').value
-            p.oferta = document.getElementById('editOferta').checked
-            p.nuevo = document.getElementById('editNuevo').checked
-            const newImg = document.getElementById('editImgB64').value || document.getElementById('editImgUrl').value
-            if (newImg) p.img = newImg
-            save(); closeModal(); renderTabla(); renderDash(); toast('Prenda actualizada', 'success')
+
+        window.closeModal = function () {
+            document.getElementById('editModal').classList.remove('open')
+            delete pendingFiles['editImgFile']
+        }
+
+        window.guardarEdit = async function () {
+            const id = document.getElementById('editId').value
+            const p = productos.find(x => String(x.id) === String(id)); if (!p) return
+            const btn = document.getElementById('btnGuardarEdit')
+            btn.disabled = true
+
+            const urlManual = document.getElementById('editImgUrl').value.trim()
+            const file = pendingFiles['editImgFile']
+            let imgUrl = p.img
+
+            try {
+                if (file && !urlManual) {
+                    spinner(true, 'Subiendo imagen...')
+                    imgUrl = await subirACloudinary(file, 'editImgBar', 'editImgProgress')
+                    spinner(false)
+                } else if (urlManual) {
+                    imgUrl = urlManual
+                }
+
+                spinner(true, 'Guardando cambios...')
+                const updated = {
+                    ...p,
+                    nombre: document.getElementById('editNombre').value,
+                    desc: document.getElementById('editDesc').value,
+                    precio: parseInt(document.getElementById('editPrecio').value) || p.precio,
+                    antes: parseInt(document.getElementById('editAntes').value) || null,
+                    cat: document.getElementById('editCat').value,
+                    oferta: document.getElementById('editOferta').checked,
+                    nuevo: document.getElementById('editNuevo').checked,
+                    img: imgUrl
+                }
+                await fsSet('productos', id, updated)
+                const idx = productos.findIndex(x => String(x.id) === String(id))
+                if (idx > -1) productos[idx] = updated
+                closeModal(); renderTabla(); renderDash()
+                notif('success', '¡Cambios guardados!', 'La prenda fue actualizada exitosamente.')
+            } catch (e) {
+                spinner(false)
+                notif('error', 'Error al actualizar', `No se pudo actualizar: ${e.message}`)
+            } finally {
+                spinner(false)
+                btn.disabled = false
+            }
         }
 
         // ── ELIMINAR ──
-        function eliminar(id) {
-            if (!confirm('¿Eliminar esta prenda?')) return
-            productos = productos.filter(p => p.id !== id); save(); renderTabla(); renderDash(); toast('Prenda eliminada')
+        window.eliminar = async function (id) {
+            const p = productos.find(x => String(x.id) === String(id))
+            if (!confirm(`¿Eliminar "${p?.nombre || 'esta prenda'}"?`)) return
+            spinner(true, 'Eliminando...')
+            try {
+                await fsDel('productos', id)
+                productos = productos.filter(x => String(x.id) !== String(id))
+                renderTabla(); renderDash()
+                toast('Prenda eliminada', 'warning')
+            } catch (e) {
+                notif('error', 'Error', 'No se pudo eliminar. Intenta de nuevo.')
+            } finally { spinner(false) }
         }
 
-        // ── TOAST ──
-        function toast(msg, type = '') {
-            const t = document.getElementById('toast')
-            t.textContent = msg; t.className = 'toast show ' + (type || '')
-            setTimeout(() => t.classList.remove('show'), 2400)
+        // ── FOTOS BOUTIQUE ──
+        function renderFotos() {
+            const lw = document.getElementById('logoPreviewWrap')
+            if (boutique.logo) lw.innerHTML = `<img src="${boutique.logo}" style="width:100%;height:100%;object-fit:cover"/>`
+            const fw = document.getElementById('facePreviewWrap')
+            if (boutique.face) fw.innerHTML = `<img src="${boutique.face}" style="width:100%;height:100%;object-fit:cover"/>`
+            if (boutique.faceName) document.getElementById('faceNombre').value = boutique.faceName
+            if (boutique.faceLema) document.getElementById('faceLema').value = boutique.faceLema
+            const galeria = boutique.galeria || []
+            document.getElementById('galeriaGrid').innerHTML = galeria.length
+                ? galeria.map((g, i) => `<div class="foto-item"><img src="${g.src}"/><button class="foto-del" onclick="eliminarGaleria(${i})">×</button></div>`).join('')
+                : '<div style="color:var(--muted);font-size:.85rem;padding:20px 0">Sin fotos aún.</div>'
         }
 
-        function init() {
-            renderLoginLogo()
+        window.subirFotoBoutique = async function (input, tipo) {
+            const file = input.files[0]; if (!file) return
+            spinner(true, `Subiendo ${tipo === 'logo' ? 'logo' : 'foto'}...`)
+            try {
+                const url = await subirACloudinary(file)
+                boutique[tipo] = url
+                await fsSet('boutique', 'main', boutique)
+                renderFotos()
+                notif('success', tipo === 'logo' ? '¡Logo actualizado!' : '¡Foto actualizada!', 'La imagen ya aparece en la página principal.')
+            } catch (e) {
+                notif('error', 'Error al subir', `No se pudo subir la imagen: ${e.message}`)
+            } finally { spinner(false) }
+        }
+
+        window.eliminarFotoBoutique = async function (tipo) {
+            if (!confirm('¿Quitar esta foto?')) return
+            spinner(true, 'Guardando...')
+            try {
+                delete boutique[tipo]
+                await fsSet('boutique', 'main', boutique)
+                renderFotos(); toast('Foto eliminada')
+            } catch (e) { notif('error', 'Error', e.message) }
+            finally { spinner(false) }
+        }
+
+        window.guardarDatoBoutique = async function (key, val) {
+            boutique[key] = val
+            try { await fsSet('boutique', 'main', boutique) } catch (e) { }
+        }
+
+        window.agregarGaleria = async function (input) {
+            const files = [...input.files]
+            spinner(true, `Subiendo ${files.length} foto(s)...`)
+            try {
+                const galeria = boutique.galeria || []
+                for (const file of files) {
+                    const url = await subirACloudinary(file)
+                    galeria.push({ src: url })
+                }
+                boutique.galeria = galeria
+                await fsSet('boutique', 'main', boutique)
+                renderFotos()
+                notif('success', '¡Galería actualizada!', `${files.length} foto(s) agregada(s) exitosamente.`)
+            } catch (e) {
+                notif('error', 'Error al subir galería', e.message)
+            } finally { spinner(false) }
+        }
+
+        window.eliminarGaleria = async function (i) {
+            if (!confirm('¿Eliminar esta foto de la galería?')) return
+            spinner(true, 'Eliminando...')
+            try {
+                boutique.galeria.splice(i, 1)
+                await fsSet('boutique', 'main', boutique)
+                renderFotos(); toast('Foto eliminada')
+            } catch (e) { notif('error', 'Error', e.message) }
+            finally { spinner(false) }
+        }
+
+        // ── PROMOCIONES ──
+        function renderPromos() {
+            const lista = document.getElementById('promoLista')
+            if (!promociones.length) {
+                lista.innerHTML = '<p style="color:var(--muted);font-size:.87rem;padding:16px 0">Sin promociones aún.</p>'
+                return
+            }
+            lista.innerHTML = promociones.map(p => `
+      <div class="promo-lista-item">
+        ${p.media
+                    ? (p.mediaTipo === 'video'
+                        ? `<video src="${p.media}" class="promo-thumb" muted></video>`
+                        : `<img src="${p.media}" class="promo-thumb"/>`)
+                    : `<div class="promo-thumb-ph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--rosa)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path d="M6 6h.008v.008H6V6Z"/></svg></div>`}
+        <div style="flex:1;min-width:160px">
+          <div style="font-weight:600;font-size:.95rem">${p.titulo}</div>
+          ${p.descuento ? `<span style="background:var(--rosa);color:white;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:50px">${p.descuento}</span>` : ''}
+          <div style="font-size:.82rem;color:var(--muted);margin-top:3px">${p.fecha || ''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span style="font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:50px;${p.activa ? 'background:#e0f5ea;color:#2d8a5e' : 'background:var(--bg);color:var(--muted)'}">${p.activa ? 'Activa' : 'Inactiva'}</span>
+          <button class="edit-btn" onclick="editarPromo('${p.id}')">Editar</button>
+          <button class="del-btn" onclick="eliminarPromo('${p.id}')">Eliminar</button>
+        </div>
+      </div>`).join('')
+        }
+
+        window.seleccionarPromoMedia = function (input) {
+            const file = input.files[0]; if (!file) return
+            pendingFiles['promoMedia'] = file
+            const esVideo = file.type.startsWith('video/')
+            document.getElementById('promoMediaTipo').value = esVideo ? 'video' : 'img'
+            document.getElementById('promoImgPreview').style.display = 'none'
+            document.getElementById('promoVidPreview').style.display = 'none'
+            if (esVideo) {
+                const vid = document.getElementById('promoVidPreview')
+                vid.src = URL.createObjectURL(file); vid.style.display = 'block'
+            } else {
+                const reader = new FileReader()
+                reader.onload = e => { const img = document.getElementById('promoImgPreview'); img.src = e.target.result; img.style.display = 'block' }
+                reader.readAsDataURL(file)
+            }
+        }
+
+        window.previewPromoUrl = function (input) {
+            const url = input.value.trim(); if (!url) return
+            const esVideo = /\.(mp4|webm|ogg)$/i.test(url)
+            document.getElementById('promoMediaTipo').value = esVideo ? 'video' : 'img'
+            if (esVideo) { const v = document.getElementById('promoVidPreview'); v.src = url; v.style.display = 'block'; document.getElementById('promoImgPreview').style.display = 'none' }
+            else { const i = document.getElementById('promoImgPreview'); i.src = url; i.style.display = 'block'; document.getElementById('promoVidPreview').style.display = 'none' }
+            document.getElementById('promoMediaUrl2').value = url
+        }
+
+        window.guardarPromo = async function () {
+            const titulo = document.getElementById('promoTitulo').value.trim()
+            if (!titulo) { notif('warning', 'Falta el título', 'El título de la promoción es obligatorio.'); return }
+            const btn = document.getElementById('btnGuardarPromo'); btn.disabled = true
+            const urlManual = document.getElementById('promoMediaUrlManual').value.trim()
+            const file = pendingFiles['promoMedia']
+            const editId = document.getElementById('promoEditId').value
+            let mediaUrl = urlManual || document.getElementById('promoMediaUrl2').value || ''
+            const mediaTipo = document.getElementById('promoMediaTipo').value || 'img'
+
+            try {
+                if (file && !urlManual) {
+                    spinner(true, 'Subiendo imagen/video...')
+                    mediaUrl = await subirACloudinary(file, 'promoBar', 'promoProgress')
+                    spinner(false)
+                }
+                spinner(true, 'Guardando promoción...')
+                const data = {
+                    titulo,
+                    descuento: document.getElementById('promoDescuento').value.trim(),
+                    desc: document.getElementById('promoDesc').value.trim(),
+                    fecha: document.getElementById('promoFecha').value.trim(),
+                    activa: document.getElementById('promoActiva').value === '1',
+                    media: mediaUrl,
+                    mediaTipo
+                }
+                const id = editId || Date.now()
+                data.id = id
+                await fsSet('promociones', id, data)
+                if (editId) {
+                    const idx = promociones.findIndex(p => String(p.id) === String(editId))
+                    if (idx > -1) promociones[idx] = data
+                } else {
+                    promociones.push(data)
+                }
+                delete pendingFiles['promoMedia']
+                cancelarPromo()
+                renderPromos()
+                notif('success', '¡Promoción guardada!', `"${titulo}" ${editId ? 'fue actualizada' : 'ya aparece en la página principal si está activa'}.`)
+            } catch (e) {
+                spinner(false)
+                notif('error', 'Error al guardar', e.message)
+            } finally { spinner(false); btn.disabled = false }
+        }
+
+        window.editarPromo = function (id) {
+            const p = promociones.find(x => String(x.id) === String(id)); if (!p) return
+            document.getElementById('promoEditId').value = id
+            document.getElementById('promoFormTitle').textContent = 'Editar Promoción'
+            document.getElementById('promoTitulo').value = p.titulo
+            document.getElementById('promoDescuento').value = p.descuento || ''
+            document.getElementById('promoDesc').value = p.desc || ''
+            document.getElementById('promoFecha').value = p.fecha || ''
+            document.getElementById('promoActiva').value = p.activa ? '1' : '0'
+            document.getElementById('promoMediaUrl2').value = p.media || ''
+            document.getElementById('promoMediaTipo').value = p.mediaTipo || 'img'
+            document.getElementById('promoMediaUrlManual').value = ''
+            const img = document.getElementById('promoImgPreview')
+            const vid = document.getElementById('promoVidPreview')
+            img.style.display = 'none'; vid.style.display = 'none'
+            if (p.media) {
+                if (p.mediaTipo === 'video') { vid.src = p.media; vid.style.display = 'block' }
+                else { img.src = p.media; img.style.display = 'block' }
+            }
+            document.getElementById('page-promociones').scrollIntoView({ behavior: 'smooth' })
+        }
+
+        window.cancelarPromo = function () {
+            document.getElementById('promoEditId').value = ''
+            document.getElementById('promoFormTitle').textContent = 'Nueva Promoción'
+                ;['promoTitulo', 'promoDescuento', 'promoDesc', 'promoFecha', 'promoMediaUrlManual'].forEach(id => document.getElementById(id).value = '')
+            document.getElementById('promoActiva').value = '1'
+            document.getElementById('promoMediaUrl2').value = ''
+            document.getElementById('promoMediaTipo').value = ''
+            document.getElementById('promoImgPreview').style.display = 'none'
+            document.getElementById('promoVidPreview').style.display = 'none'
+            delete pendingFiles['promoMedia']
+        }
+
+        window.eliminarPromo = async function (id) {
+            const p = promociones.find(x => String(x.id) === String(id))
+            if (!confirm(`¿Eliminar "${p?.titulo}"?`)) return
+            spinner(true, 'Eliminando...')
+            try {
+                await fsDel('promociones', id)
+                promociones = promociones.filter(x => String(x.id) !== String(id))
+                renderPromos(); toast('Promoción eliminada', 'warning')
+            } catch (e) { notif('error', 'Error', e.message) }
+            finally { spinner(false) }
+        }
+
+        // ── INIT ──
+        async function init() {
+            await cargarDatos()
             renderDash()
-            if (localStorage.getItem(LS_DARK) === 'true') document.getElementById('darkBtn').textContent = '☀️ Modo claro'
+            renderFotos()
+            if (localStorage.getItem('magy_dark') === 'true') document.getElementById('darkBtn').textContent = '☀️ Modo claro'
         }
-        renderLoginLogo()
+
+        // Mostrar logo en login desde cache si existe
+        ; (async () => {
+            try {
+                const snap = await getDocs(collection(db, 'boutique'))
+                const b = snap.docs[0]?.data() || {}
+                if (b.logo) {
+                    document.getElementById('loginLogoWrap').innerHTML = `<img src="${b.logo}" class="login-logo"/>`
+                }
+            } catch (e) { }
+        })()
     </script>
 </body>
 

@@ -1957,13 +1957,44 @@
     const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }), { threshold: .12 })
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el))
 
-    // ── DATA ──
+    // ── FIREBASE + DATA ──
     const WA = '529221282878'
-    const productos = JSON.parse(localStorage.getItem('magy_productos') || '[]')
-    const boutique = JSON.parse(localStorage.getItem('magy_boutique') || '{}')
-    let catActiva = 'Todas'
+    let productos = [], boutique = {}, promociones = [], catActiva = 'Todas'
 
-    // ── BOUTIQUE (logo, foto mamá, galería) ──
+    // Cargar todo de Firestore
+    async function cargarDatos() {
+      try {
+        const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js')
+        const { getFirestore, collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js')
+        const app = initializeApp({
+          apiKey: "AIzaSyCXIMM503RQfUny56R4Ax20lbfnAOJlL08",
+          authDomain: "boutique-magy-rivera.firebaseapp.com",
+          projectId: "boutique-magy-rivera",
+          storageBucket: "boutique-magy-rivera.firebasestorage.app",
+          messagingSenderId: "889885372669",
+          appId: "1:889885372669:web:7e538eabab0fe64ca88e94"
+        }, 'index-app')
+        const db = getFirestore(app)
+        const [prodSnap, boutSnap, promoSnap] = await Promise.all([
+          getDocs(collection(db, 'productos')),
+          getDocs(collection(db, 'boutique')),
+          getDocs(collection(db, 'promociones'))
+        ])
+        productos = prodSnap.docs.map(d => d.data())
+        boutique  = boutSnap.docs[0]?.data() || {}
+        promociones = promoSnap.docs.map(d => d.data()).filter(p => p.activa)
+      } catch(e) {
+        console.warn('Firebase no disponible, usando localStorage como fallback', e)
+        productos = JSON.parse(localStorage.getItem('magy_productos') || '[]')
+        boutique  = JSON.parse(localStorage.getItem('magy_boutique') || '{}')
+        promociones = JSON.parse(localStorage.getItem('magy_promociones') || '[]').filter(p => p.activa)
+      }
+      cargarBoutique()
+      renderOfertas(); renderTabs(); renderCat()
+      renderPromos(); renderHorario()
+    }
+
+    // ── BOUTIQUE ──
     function cargarBoutique() {
       if (boutique.logo) {
         const nl = document.getElementById('navLogo')
@@ -1990,11 +2021,11 @@
 
     function renderHeroGrid(galeria) {
       const fotos = galeria.slice(0, 4)
-      document.getElementById('heroGrid').innerHTML = [0, 1, 2, 3].map(i => `
-      <div class="hero-img">
-        ${fotos[i] ? `<img src="${fotos[i].src}" alt="${heroLabels[i]}"/>` : `${heroSVGs[i]}`}
-        <div class="hero-img-label">${heroLabels[i]}</div>
-      </div>`).join('')
+      document.getElementById('heroGrid').innerHTML = [0,1,2,3].map(i => `
+        <div class="hero-img">
+          ${fotos[i] ? `<img src="${fotos[i].src}" alt="${heroLabels[i]}"/>` : heroSVGs[i]}
+          <div class="hero-img-label">${heroLabels[i]}</div>
+        </div>`).join('')
     }
 
     function waMensaje(p) {
@@ -2004,94 +2035,124 @@
 
     // ── OFERTAS ──
     function renderOfertas() {
-      const of = productos.filter(p => p.oferta || p.nuevo).slice(0, 4)
+      const of = productos.filter(p => p.oferta || p.nuevo).slice(0,4)
       if (!of.length) {
         document.getElementById('ofertasGrid').innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--muted)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--rosa)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="width:52px;height:52px;margin-bottom:16px;opacity:.5;display:block;margin-left:auto;margin-right:auto"><path d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path d="M6 6h.008v.008H6V6Z"/></svg><div style="font-size:1rem;font-weight:600">Próximamente nuevas ofertas</div></div>`
         return
       }
       document.getElementById('ofertasGrid').innerHTML = of.map(p => `
-      <div class="oferta-card">
-        <div class="oferta-img" style="background:${imgBg(p.cat)}">
-          ${p.oferta ? '<div class="oferta-badge">Oferta</div>' : ''}
-          ${p.nuevo ? '<div class="oferta-badge nuevo">Nuevo</div>' : ''}
-          ${p.img ? `<img src="${p.img}" alt="${p.nombre}"/>` : `${catSVG(p.cat)}`}
-        </div>
-        <div class="oferta-body">
-          <div class="oferta-cat">${p.cat}</div>
-          <div class="oferta-nombre">${p.nombre}</div>
-          <div class="oferta-desc">${p.desc}</div>
-          <div class="oferta-footer">
-            <div>
-              <div class="oferta-precio">$${p.precio} <span style="font-size:.85rem;color:var(--muted);font-family:'Jost',sans-serif;font-weight:400">MXN</span></div>
-              ${p.antes ? `<div class="oferta-precio-old">Antes $${p.antes}</div>` : ''}
-            </div>
-            <button class="wa-mini" onclick="waMensaje(${JSON.stringify(p).replace(/"/g, '&quot;')})">${svgWA}</button>
+        <div class="oferta-card">
+          <div class="oferta-img" style="background:${imgBg(p.cat)}">
+            ${p.oferta ? '<div class="oferta-badge">Oferta</div>' : ''}
+            ${p.nuevo  ? '<div class="oferta-badge nuevo">Nuevo</div>' : ''}
+            ${p.img ? `<img src="${p.img}" alt="${p.nombre}"/>` : catSVG(p.cat)}
           </div>
-        </div>
-      </div>`).join('')
+          <div class="oferta-body">
+            <div class="oferta-cat">${p.cat}</div>
+            <div class="oferta-nombre">${p.nombre}</div>
+            <div class="oferta-desc">${p.desc}</div>
+            <div class="oferta-footer">
+              <div>
+                <div class="oferta-precio">$${p.precio} <span style="font-size:.85rem;color:var(--muted);font-family:'Jost',sans-serif;font-weight:400">MXN</span></div>
+                ${p.antes ? `<div class="oferta-precio-old">Antes $${p.antes}</div>` : ''}
+              </div>
+              <button class="wa-mini" onclick="waMensaje(${JSON.stringify(p).replace(/"/g,'&quot;')})">${svgWA}</button>
+            </div>
+          </div>
+        </div>`).join('')
     }
 
     // ── CATÁLOGO ──
-    function getCats() { return ['Todas', ...new Set(productos.map(p => p.cat).filter(Boolean))] }
+    function getCats() { return ['Todas',...new Set(productos.map(p=>p.cat).filter(Boolean))] }
     function renderTabs() {
-      document.getElementById('catTabs').innerHTML = getCats().map(c => `<button class="cat-tab ${c === catActiva ? 'active' : ''}" onclick="filtrar('${c}')">${c}</button>`).join('')
+      document.getElementById('catTabs').innerHTML = getCats().map(c =>
+        `<button class="cat-tab ${c===catActiva?'active':''}" onclick="filtrar('${c}')">${c}</button>`).join('')
     }
-    function filtrar(cat) { catActiva = cat; renderTabs(); renderCat() }
+    function filtrar(cat) { catActiva=cat; renderTabs(); renderCat() }
     function renderCat() {
-      const fl = catActiva === 'Todas' ? productos : productos.filter(p => p.cat === catActiva)
+      const fl = catActiva==='Todas' ? productos : productos.filter(p=>p.cat===catActiva)
       if (!fl.length) {
-        document.getElementById('catGrid').innerHTML = `<div class="empty-cat"><svg viewBox="0 0 24 24"><path d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path d="M6 6h.008v.008H6V6Z"/></svg><div style="font-size:1rem;font-weight:600">${productos.length ? 'Sin prendas en esta categoría' : 'El catálogo está siendo preparado'}</div><div style="font-size:.85rem;margin-top:6px">${productos.length ? 'Selecciona otra categoría' : 'Pronto encontrarás prendas increíbles aquí'}</div></div>`
+        document.getElementById('catGrid').innerHTML = `<div class="empty-cat"><svg viewBox="0 0 24 24"><path d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path d="M6 6h.008v.008H6V6Z"/></svg><div style="font-size:1rem;font-weight:600">${productos.length?'Sin prendas en esta categoría':'El catálogo está siendo preparado'}</div><div style="font-size:.85rem;margin-top:6px">${productos.length?'Selecciona otra categoría':'Pronto encontrarás prendas increíbles aquí'}</div></div>`
         return
       }
-      document.getElementById('catGrid').innerHTML = fl.map((p, i) => `
-      <div class="cat-card" style="animation-delay:${i * .04}s">
-        <div class="cat-img" style="background:${imgBg(p.cat)}">
-          ${p.nuevo ? '<div style="position:absolute;top:10px;right:10px;background:#2d8a5e;color:white;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:50px;text-transform:uppercase;letter-spacing:.05em">Nuevo</div>' : ''}
-          ${p.img ? `<img src="${p.img}" alt="${p.nombre}"/>` : `${catSVG(p.cat)}`}
-        </div>
-        <div class="cat-body">
-          <div class="cat-nombre">${p.nombre}</div>
-          <div class="cat-det">${p.desc}</div>
-          <div class="cat-row">
-            <div class="cat-precio">$${p.precio} <span style="font-size:.8rem;color:var(--muted);font-family:'Jost',sans-serif;font-weight:400">MXN</span></div>
-            <button class="wa-btn" onclick="waMensaje(${JSON.stringify(p).replace(/"/g, '&quot;')})">${svgWA} Pedir</button>
+      document.getElementById('catGrid').innerHTML = fl.map((p,i) => `
+        <div class="cat-card" style="animation-delay:${i*.04}s">
+          <div class="cat-img" style="background:${imgBg(p.cat)}">
+            ${p.nuevo?'<div style="position:absolute;top:10px;right:10px;background:#2d8a5e;color:white;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:50px;text-transform:uppercase;letter-spacing:.05em">Nuevo</div>':''}
+            ${p.img ? `<img src="${p.img}" alt="${p.nombre}"/>` : catSVG(p.cat)}
           </div>
-        </div>
-      </div>`).join('')
+          <div class="cat-body">
+            <div class="cat-nombre">${p.nombre}</div>
+            <div class="cat-det">${p.desc}</div>
+            <div class="cat-row">
+              <div class="cat-precio">$${p.precio} <span style="font-size:.8rem;color:var(--muted);font-family:'Jost',sans-serif;font-weight:400">MXN</span></div>
+              <button class="wa-btn" onclick="waMensaje(${JSON.stringify(p).replace(/"/g,'&quot;')})">${svgWA} Pedir</button>
+            </div>
+          </div>
+        </div>`).join('')
+    }
+
+    // ── PROMOCIONES ──
+    function renderPromos() {
+      const sec = document.getElementById('promociones')
+      if (!promociones.length) { sec.style.display='none'; return }
+      sec.style.display = 'block'
+      document.getElementById('promoGrid').innerHTML = promociones.map(p => `
+        <div class="promo-card">
+          <div class="promo-media">
+            ${p.descuento ? `<div class="promo-badge">${p.descuento}</div>` : ''}
+            ${p.media
+              ? (p.mediaTipo==='video'
+                  ? `<video src="${p.media}" autoplay muted loop playsinline></video>`
+                  : `<img src="${p.media}" alt="${p.titulo}" loading="lazy"/>`)
+              : `<svg viewBox="0 0 24 24" fill="none" stroke="#c0306a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.5"><path d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path d="M6 6h.008v.008H6V6Z"/></svg>`}
+          </div>
+          <div class="promo-body">
+            ${p.fecha ? `<div class="promo-fecha">${p.fecha}</div>` : ''}
+            <div class="promo-titulo">${p.titulo}</div>
+            ${p.desc ? `<div class="promo-desc">${p.desc}</div>` : ''}
+            <a class="promo-cta" href="https://wa.me/${WA}?text=${encodeURIComponent(`Hola Magy! Vi la promoción "${p.titulo}" y me interesa. ¿Me puedes dar más info?`)}" target="_blank">
+              ${svgWA} Aprovechar promoción
+            </a>
+          </div>
+        </div>`).join('')
     }
 
     function imgBg(cat) {
-      const m = { 'Vestidos': 'linear-gradient(135deg,#f7d6e4,#efc0d2)', 'Blusas': 'linear-gradient(135deg,#fce4ec,#f7c8d8)', 'Pantalones & Faldas': 'linear-gradient(135deg,#ede0f0,#dcc8e8)', 'Accesorios': 'linear-gradient(135deg,#fff0e0,#ffe0c0)', 'Conjuntos': 'linear-gradient(135deg,#e0ffe8,#c8f0d4)', 'Lencería': 'linear-gradient(135deg,#fde8f5,#f5c8e8)', 'Bolsas & Regalos': 'linear-gradient(135deg,#fff8e0,#ffe8b0)', 'Skincare & Haircare': 'linear-gradient(135deg,#e8f8f0,#c8ead8)', 'Perfumes': 'linear-gradient(135deg,#f0e8ff,#ddc8f5)' }
+      const m = {'Vestidos':'linear-gradient(135deg,#f7d6e4,#efc0d2)','Blusas':'linear-gradient(135deg,#fce4ec,#f7c8d8)','Pantalones & Faldas':'linear-gradient(135deg,#ede0f0,#dcc8e8)','Accesorios':'linear-gradient(135deg,#fff0e0,#ffe0c0)','Conjuntos':'linear-gradient(135deg,#e0ffe8,#c8f0d4)','Lencería':'linear-gradient(135deg,#fde8f5,#f5c8e8)','Bolsas & Regalos':'linear-gradient(135deg,#fff8e0,#ffe8b0)','Skincare & Haircare':'linear-gradient(135deg,#e8f8f0,#c8ead8)','Perfumes':'linear-gradient(135deg,#f0e8ff,#ddc8f5)'}
       return m[cat] || 'linear-gradient(135deg,#fce4ec,#f7c8d8)'
     }
 
     // ── HORARIO ──
     function renderHorario() {
-      const ahora = new Date(), dia = ahora.getDay(), hora = ahora.getHours() + ahora.getMinutes() / 60
-      const turnos = [
-        { titulo: 'Lunes — Viernes', svg: svgCal, horas: '10:00 am – 7:00 pm', abre: 10, cierra: 19, dias: [1, 2, 3, 4, 5] },
-        { titulo: 'Sábado', svg: svgBolsaH, horas: '10:00 am – 5:00 pm', abre: 10, cierra: 17, dias: [6] },
-        { titulo: 'Domingo', svg: svgLunaH, horas: 'Cerrado', abre: null, cierra: null, dias: [0] },
+      const ahora=new Date(), dia=ahora.getDay(), hora=ahora.getHours()+ahora.getMinutes()/60
+      const turnos=[
+        {titulo:'Lunes — Viernes',svg:svgCal,horas:'10:00 am – 7:00 pm',abre:10,cierra:19,dias:[1,2,3,4,5]},
+        {titulo:'Sábado',svg:svgBolsaH,horas:'10:00 am – 5:00 pm',abre:10,cierra:17,dias:[6]},
+        {titulo:'Domingo',svg:svgLunaH,horas:'Cerrado',abre:null,cierra:null,dias:[0]},
       ]
       document.getElementById('horarioGrid').innerHTML = turnos.map(t => {
-        const esHoy = t.dias.includes(dia)
-        const ab = esHoy && t.abre !== null && hora >= t.abre && hora < t.cierra
-        const badge = ab ? `<span class="horario-badge abierto"><span class="dot"></span>Abierto ahora</span>` : t.abre === null ? `<span class="horario-badge cerrado-b"><span class="dot"></span>Descansamos</span>` : `<span class="horario-badge cerrado-b"><span class="dot"></span>Cerrado</span>`
-        return `<div class="horario-card${esHoy ? ' hoy' : ''}${t.abre === null ? ' cerrado' : ''}">
-        ${esHoy ? '<div class="horario-ahora">HOY</div>' : ''}
-        <div class="horario-dia-icon">${t.svg}</div>
-        <div class="horario-dia">${t.titulo}</div>
-        <div class="horario-hora">${t.horas}</div>${badge}</div>`
+        const esHoy=t.dias.includes(dia)
+        const ab=esHoy&&t.abre!==null&&hora>=t.abre&&hora<t.cierra
+        const badge=ab?`<span class="horario-badge abierto"><span class="dot"></span>Abierto ahora</span>`:t.abre===null?`<span class="horario-badge cerrado-b"><span class="dot"></span>Descansamos</span>`:`<span class="horario-badge cerrado-b"><span class="dot"></span>Cerrado</span>`
+        return `<div class="horario-card${esHoy?' hoy':''}${t.abre===null?' cerrado':''}">
+          ${esHoy?'<div class="horario-ahora">HOY</div>':''}
+          <div class="horario-dia-icon">${t.svg}</div>
+          <div class="horario-dia">${t.titulo}</div>
+          <div class="horario-hora">${t.horas}</div>${badge}</div>`
       }).join('')
-      const th = turnos.find(t => t.dias.includes(dia))
-      const ab = th && th.abre !== null && hora >= th.abre && hora < th.cierra
-      document.getElementById('horarioStatus').textContent = ab ? 'Estamos abiertos ahora mismo — ¡visítanos!' : 'Consulta nuestros horarios para planear tu visita'
+      const th=turnos.find(t=>t.dias.includes(dia))
+      const ab=th&&th.abre!==null&&hora>=th.abre&&hora<th.cierra
+      document.getElementById('horarioStatus').textContent=ab?'Estamos abiertos ahora mismo — ¡visítanos!':'Consulta nuestros horarios para planear tu visita'
     }
 
-    function ir(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }) }
-    function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2400) }
+    function ir(id) { document.getElementById(id).scrollIntoView({behavior:'smooth'}) }
 
-    cargarBoutique(); renderOfertas(); renderTabs(); renderCat(); renderHorario()
+    // Mostrar hero SVG mientras carga
+    renderHeroGrid([])
+    renderHorario()
+    // Cargar datos de Firebase
+    cargarDatos()
   </script>
 </body>
 
