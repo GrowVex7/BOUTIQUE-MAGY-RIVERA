@@ -793,7 +793,8 @@
     .oferta-img img {
       width: 100%;
       height: 100%;
-      object-fit: cover
+      object-fit: contain;
+      padding: 8px
     }
 
     .oferta-img svg {
@@ -958,7 +959,8 @@
     .cat-img img {
       width: 100%;
       height: 100%;
-      object-fit: cover
+      object-fit: contain;
+      padding: 8px
     }
 
     .cat-img svg {
@@ -1796,6 +1798,263 @@
       width: fit-content
     }
 
+    /* ════════════════════════════════════════════════════════════
+       SECCIÓN DE OPINIONES
+       ════════════════════════════════════════════════════════════ */
+    #opiniones {
+      padding: 80px 8vw;
+      background: var(--rosa-light)
+    }
+
+    .opiniones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem
+    }
+
+    .opinion-card {
+      background: var(--blanco);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--sombra);
+      transition: transform .25s, box-shadow .25s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .opinion-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--sombra-lg)
+    }
+
+    .opinion-stars {
+      display: flex;
+      gap: 3px
+    }
+
+    .opinion-star {
+      font-size: 1.2rem;
+      color: #e0d0da;
+      transition: color .15s
+    }
+
+    .opinion-star.filled {
+      color: #f4b942
+    }
+
+    .opinion-texto {
+      font-size: .92rem;
+      color: var(--texto);
+      line-height: 1.6;
+      flex: 1;
+      font-style: italic
+    }
+
+    .opinion-texto::before {
+      content: '"';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--rosa);
+      line-height: 0;
+      vertical-align: -.4rem;
+      margin-right: 4px
+    }
+
+    .opinion-autor {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--borde)
+    }
+
+    .opinion-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rosa-soft), var(--rosa));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--rosa-deep);
+      flex-shrink: 0
+    }
+
+    .opinion-nombre {
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--texto)
+    }
+
+    .opinion-fecha {
+      font-size: .75rem;
+      color: var(--muted)
+    }
+
+    /* Formulario de nueva opinión */
+    .opinion-form-wrap {
+      background: var(--blanco);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: var(--sombra-lg);
+      max-width: 560px;
+      margin: 3rem auto 0
+    }
+
+    .opinion-form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--texto)
+    }
+
+    .opinion-form-title em {
+      color: var(--rosa);
+      font-style: italic
+    }
+
+    .opinion-form-sub {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 24px
+    }
+
+    .opinion-star-select {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px
+    }
+
+    .opinion-star-select span {
+      font-size: 2rem;
+      cursor: pointer;
+      color: #e0d0da;
+      transition: color .15s, transform .15s;
+      user-select: none
+    }
+
+    .opinion-star-select span:hover,
+    .opinion-star-select span.selected {
+      color: #f4b942;
+      transform: scale(1.15)
+    }
+
+    .opinion-form-input {
+      width: 100%;
+      background: var(--crema);
+      border: 1.5px solid var(--borde);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-family: 'Jost', sans-serif;
+      font-size: .92rem;
+      color: var(--texto);
+      outline: none;
+      transition: border-color .2s;
+      margin-bottom: 12px
+    }
+
+    .opinion-form-input:focus {
+      border-color: var(--rosa)
+    }
+
+    textarea.opinion-form-input {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.55
+    }
+
+    .opinion-form-hint {
+      font-size: .75rem;
+      color: var(--muted);
+      margin-top: -8px;
+      margin-bottom: 18px
+    }
+
+    /* Rating summary */
+    .opiniones-summary {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      background: var(--blanco);
+      border-radius: 20px;
+      padding: 24px 32px;
+      box-shadow: var(--sombra);
+      margin-bottom: 2rem;
+      flex-wrap: wrap
+    }
+
+    .summary-score {
+      text-align: center
+    }
+
+    .summary-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--texto);
+      line-height: 1
+    }
+
+    .summary-stars {
+      display: flex;
+      gap: 3px;
+      justify-content: center;
+      margin: 6px 0 4px
+    }
+
+    .summary-stars span {
+      color: #f4b942;
+      font-size: 1.1rem
+    }
+
+    .summary-total {
+      font-size: .78rem;
+      color: var(--muted)
+    }
+
+    .summary-bars {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 160px
+    }
+
+    .summary-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .78rem;
+      color: var(--muted)
+    }
+
+    .summary-bar-row span:first-child {
+      width: 14px;
+      text-align: right;
+      font-weight: 600
+    }
+
+    .summary-bar-track {
+      flex: 1;
+      height: 7px;
+      background: var(--borde);
+      border-radius: 4px;
+      overflow: hidden
+    }
+
+    .summary-bar-fill {
+      height: 100%;
+      background: #f4b942;
+      border-radius: 4px;
+      transition: width .6s ease
+    }
+
     footer {
       background: linear-gradient(135deg, #2a0d1a 0%, #1a0510 100%);
       color: rgba(255, 255, 255, .6);
@@ -2219,6 +2478,45 @@
       </div>
     </section>
 
+    <!-- OPINIONES -->
+    <section id="opiniones" class="reveal">
+      <div style="text-align:center">
+        <div class="sec-eyebrow" style="justify-content:center">Lo que dicen nuestras clientas</div>
+        <h2 class="sec-title">Opiniones <em>& Reseñas</em></h2>
+        <p style="color:var(--muted);margin-top:.5rem;font-size:.95rem">Comparte tu experiencia y ayuda a otras clientas.</p>
+      </div>
+      <!-- Resumen de calificación -->
+      <div class="opiniones-summary" id="opinionesSummary" style="display:none">
+        <div class="summary-score">
+          <div class="summary-number" id="summaryScore">0</div>
+          <div class="summary-stars" id="summaryStars"></div>
+          <div class="summary-total" id="summaryTotal">0 opiniones</div>
+        </div>
+        <div class="summary-bars" id="summaryBars"></div>
+      </div>
+      <!-- Cards de opiniones -->
+      <div class="opiniones-grid" id="opinionesGrid"></div>
+      <!-- Formulario nueva opinión -->
+      <div class="opinion-form-wrap">
+        <div class="opinion-form-title">Deja tu <em>opinión</em></div>
+        <div class="opinion-form-sub">¿Cómo fue tu experiencia? ¡Nos encanta saber!</div>
+        <div style="margin-bottom:6px;font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Tu calificación</div>
+        <div class="opinion-star-select" id="starSelect">
+          <span data-val="1" onclick="selStar(1)" title="1 estrella">★</span>
+          <span data-val="2" onclick="selStar(2)" title="2 estrellas">★</span>
+          <span data-val="3" onclick="selStar(3)" title="3 estrellas">★</span>
+          <span data-val="4" onclick="selStar(4)" title="4 estrellas">★</span>
+          <span data-val="5" onclick="selStar(5)" title="5 estrellas">★</span>
+        </div>
+        <input class="opinion-form-input" id="opinNombre" placeholder="Tu nombre (ej: María G.)" maxlength="40" />
+        <textarea class="opinion-form-input" id="opinTexto" placeholder="Cuéntanos qué te pareció la boutique, la atención, las prendas..." maxlength="300"></textarea>
+        <div class="opinion-form-hint">Máximo 300 caracteres · Tu nombre se mostrará públicamente</div>
+        <button class="btn-rosa" onclick="enviarOpinion()" id="btnOpinion" style="width:100%;justify-content:center">
+          Publicar reseña
+        </button>
+      </div>
+    </section>
+
     <footer>
       <div class="footer-top">
         <div>
@@ -2228,6 +2526,7 @@
         <div class="footer-links">
           <a onclick="ir('ofertas')">Ofertas</a>
           <a onclick="ir('catalogo')">Catálogo</a>
+          <a onclick="ir('opiniones')">Opiniones</a>
           <a onclick="ir('horario')">Horario</a>
           <a onclick="ir('ubicacion')">Ubicación</a>
         </div>
@@ -2455,7 +2754,8 @@
 
     function waMensaje(p, colorNombre) {
       const colorLine = colorNombre ? ` en color *${colorNombre}*` : ''
-      const msg = `Hola Magy! Vi en tu página el *${p.nombre}*${colorLine} y me interesa saber más. Está disponible? Precio: $${p.precio} MXN`
+      const precioLine = p.precio != null ? `. Precio: $${p.precio} MXN` : ''
+      const msg = `Hola Magy! Vi en tu página el *${p.nombre}*${colorLine} y me interesa saber más. Está disponible?${precioLine}`
       window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank')
     }
 
@@ -2501,7 +2801,7 @@
             ${thumbsHTML(p)}
             <div class="oferta-footer">
               <div>
-                <div class="oferta-precio">$${p.precio} <span style="font-size:.85rem;color:var(--muted);font-family:'Jost',sans-serif;font-weight:400">MXN</span></div>
+                <div class="oferta-precio">${p.precio != null ? `$${p.precio} <span style="font-size:.85rem;color:var(--muted);font-family:'Jost',sans-serif;font-weight:400">MXN</span>` : `<span style="font-size:.85rem;color:var(--muted)">Consultar precio</span>`}</div>
                 ${p.antes ? `<div class="oferta-precio-old">Antes $${p.antes}</div>` : ''}
               </div>
               <button class="wa-mini" onclick="event.stopPropagation();waMensaje(${JSON.stringify(p).replace(/"/g, '&quot;')})">${svgWA}</button>
@@ -2534,7 +2834,7 @@
             <div class="cat-det">${p.desc}</div>
             ${thumbsHTML(p)}
             <div class="cat-row">
-              <div class="cat-precio">$${p.precio} <span style="font-size:.8rem;color:var(--muted);font-family:'Jost',sans-serif;font-weight:400">MXN</span></div>
+              <div class="cat-precio">${p.precio != null ? `$${p.precio} <span style="font-size:.8rem;color:var(--muted);font-family:'Jost',sans-serif;font-weight:400">MXN</span>` : `<span style="font-size:.85rem;color:var(--muted)">Consultar precio</span>`}</div>
               <button class="wa-btn" onclick="event.stopPropagation();waMensaje(${JSON.stringify(p).replace(/"/g, '&quot;')})">${svgWA} Pedir</button>
             </div>
           </div>
@@ -2563,10 +2863,10 @@
       document.getElementById('prodBadges').innerHTML = badgesHTML.join('')
 
       // precio
-      document.getElementById('prodPrice').innerHTML = `
-        <span class="prod-price-now">$${p.precio} <small>MXN</small></span>
-        ${p.antes ? `<span class="prod-price-old">$${p.antes}</span>` : ''}
-      `
+      document.getElementById('prodPrice').innerHTML = p.precio != null
+        ? `<span class="prod-price-now">$${p.precio} <small>MXN</small></span>
+           ${p.antes ? `<span class="prod-price-old">$${p.antes}</span>` : ''}`
+        : `<span style="font-size:1rem;color:var(--muted);font-style:italic">Precio a consultar por WhatsApp</span>`
 
       // descripción
       document.getElementById('prodDesc').textContent = p.desc || ''
@@ -2711,6 +3011,144 @@
       const ab = th && th.abre !== null && hora >= th.abre && hora < th.cierra
       document.getElementById('horarioStatus').textContent = ab ? 'Estamos abiertos ahora mismo — ¡visítanos!' : 'Consulta nuestros horarios para planear tu visita'
     }
+
+    // ── OPINIONES ──
+    let opinionesData = []
+    let estrellaSeleccionada = 0
+
+    window.selStar = function(val) {
+      estrellaSeleccionada = val
+      document.querySelectorAll('#starSelect span').forEach(s => {
+        s.classList.toggle('selected', parseInt(s.dataset.val) <= val)
+      })
+    }
+
+    async function cargarOpiniones() {
+      try {
+        const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js')
+        const { getFirestore, collection, getDocs, addDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js')
+        const app2 = initializeApp({
+          apiKey: "AIzaSyCXIMM503RQfUny56R4Ax20lbfnAOJlL08",
+          authDomain: "boutique-magy-rivera.firebaseapp.com",
+          projectId: "boutique-magy-rivera",
+          storageBucket: "boutique-magy-rivera.firebasestorage.app",
+          messagingSenderId: "889885372669",
+          appId: "1:889885372669:web:7e538eabab0fe64ca88e94"
+        }, 'opiniones-app')
+        const db2 = getFirestore(app2)
+        const snap = await getDocs(collection(db2, 'opiniones'))
+        opinionesData = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (b.ts || 0) - (a.ts || 0))
+
+        // guardar referencia para enviar
+        window._dbOpiniones = db2
+        window._colOpiniones = collection(db2, 'opiniones')
+        window._addDocFn = addDoc
+      } catch(e) {
+        opinionesData = JSON.parse(localStorage.getItem('magy_opiniones') || '[]')
+      }
+      renderOpiniones()
+    }
+
+    function renderOpiniones() {
+      const grid = document.getElementById('opinionesGrid')
+      const summary = document.getElementById('opinionesSummary')
+
+      if (!opinionesData.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted)">
+          <div style="font-size:2.5rem;margin-bottom:12px">⭐</div>
+          <div style="font-size:1rem;font-weight:600">¡Sé la primera en opinar!</div>
+          <div style="font-size:.85rem;margin-top:6px">Las reseñas de nuestras clientas son muy importantes para nosotras.</div>
+        </div>`
+        summary.style.display = 'none'
+        return
+      }
+
+      // Summary
+      summary.style.display = 'flex'
+      const avg = (opinionesData.reduce((s, o) => s + (o.estrellas || 5), 0) / opinionesData.length).toFixed(1)
+      document.getElementById('summaryScore').textContent = avg
+      document.getElementById('summaryTotal').textContent = `${opinionesData.length} opinión${opinionesData.length !== 1 ? 'es' : ''}`
+      const filledStars = Math.round(parseFloat(avg))
+      document.getElementById('summaryStars').innerHTML = [1,2,3,4,5].map(i =>
+        `<span>${i <= filledStars ? '★' : '☆'}</span>`).join('')
+
+      const counts = [5,4,3,2,1].map(s => ({s, n: opinionesData.filter(o => (o.estrellas||5) === s).length}))
+      document.getElementById('summaryBars').innerHTML = counts.map(({s, n}) => {
+        const pct = opinionesData.length ? Math.round(n / opinionesData.length * 100) : 0
+        return `<div class="summary-bar-row">
+          <span>${s}</span>
+          <span style="font-size:.85rem">★</span>
+          <div class="summary-bar-track"><div class="summary-bar-fill" style="width:${pct}%"></div></div>
+          <span style="min-width:22px">${n}</span>
+        </div>`
+      }).join('')
+
+      grid.innerHTML = opinionesData.map(o => {
+        const ini = (o.nombre || 'A')[0].toUpperCase()
+        const estrellas = o.estrellas || 5
+        const starsHTML = [1,2,3,4,5].map(i =>
+          `<span class="opinion-star${i <= estrellas ? ' filled' : ''}">★</span>`).join('')
+        const fecha = o.ts ? new Date(o.ts).toLocaleDateString('es-MX', {year:'numeric',month:'long',day:'numeric'}) : ''
+        return `<div class="opinion-card">
+          <div class="opinion-stars">${starsHTML}</div>
+          <div class="opinion-texto">${escHTML(o.texto || '')}</div>
+          <div class="opinion-autor">
+            <div class="opinion-avatar">${ini}</div>
+            <div>
+              <div class="opinion-nombre">${escHTML(o.nombre || 'Clienta')}</div>
+              ${fecha ? `<div class="opinion-fecha">${fecha}</div>` : ''}
+            </div>
+          </div>
+        </div>`
+      }).join('')
+    }
+
+    function escHTML(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    }
+
+    window.enviarOpinion = async function() {
+      const nombre = (document.getElementById('opinNombre').value || '').trim()
+      const texto = (document.getElementById('opinTexto').value || '').trim()
+      if (!estrellaSeleccionada) { toast('Selecciona cuántas estrellas merece'); return }
+      if (!texto) { toast('Escribe tu reseña antes de publicar'); return }
+
+      const btn = document.getElementById('btnOpinion')
+      btn.disabled = true; btn.textContent = 'Publicando...'
+
+      const nueva = {
+        nombre: nombre || 'Clienta anónima',
+        texto,
+        estrellas: estrellaSeleccionada,
+        ts: Date.now()
+      }
+
+      try {
+        if (window._addDocFn && window._colOpiniones) {
+          await window._addDocFn(window._colOpiniones, nueva)
+        } else {
+          const stored = JSON.parse(localStorage.getItem('magy_opiniones') || '[]')
+          stored.unshift({...nueva, id: Date.now().toString()})
+          localStorage.setItem('magy_opiniones', JSON.stringify(stored))
+        }
+        opinionesData.unshift({...nueva, id: Date.now().toString()})
+        renderOpiniones()
+        // reset form
+        document.getElementById('opinNombre').value = ''
+        document.getElementById('opinTexto').value = ''
+        estrellaSeleccionada = 0
+        document.querySelectorAll('#starSelect span').forEach(s => s.classList.remove('selected'))
+        toast('¡Gracias por tu reseña! 🌸')
+      } catch(e) {
+        toast('No se pudo publicar, intenta de nuevo')
+      } finally {
+        btn.disabled = false; btn.textContent = 'Publicar reseña'
+      }
+    }
+
+    // Cargar opiniones al inicio
+    cargarOpiniones()
 
     function ir(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }) }
 

@@ -1470,6 +1470,7 @@
                         Boutique</button>
                     <button class="nav-item" onclick="goTo('catalogo',this)"><span class="icon">📋</span> Vista
                         Catálogo</button>
+                    <button class="nav-item" onclick="goTo('opiniones',this)"><span class="icon">⭐</span> Opiniones</button>
                 </nav>
                 <div class="sidebar-footer">
                     <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">🌙 Modo oscuro</button>
@@ -1546,7 +1547,7 @@
                     <div class="card" style="max-width:640px">
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label">Nombre de la prenda</label>
+                                <label class="form-label">Nombre de la prenda <span style="color:var(--muted);font-weight:400;text-transform:none;font-size:.7rem">(opcional)</span></label>
                                 <input class="form-input" id="fNombre" placeholder="Ej: Vestido Floral" />
                             </div>
                             <div class="form-group">
@@ -1557,16 +1558,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Descripción</label>
+                            <label class="form-label">Descripción <span style="color:var(--muted);font-weight:400;text-transform:none;font-size:.7rem">(opcional)</span></label>
                             <input class="form-input" id="fDesc" placeholder="Breve descripción de la prenda" />
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label">Precio (MXN)</label>
+                                <label class="form-label">Precio MXN <span style="color:var(--muted);font-weight:400;text-transform:none;font-size:.7rem">(opcional)</span></label>
                                 <input class="form-input" type="number" id="fPrecio" placeholder="350" />
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Precio anterior (opcional)</label>
+                                <label class="form-label">Precio anterior <span style="color:var(--muted);font-weight:400;text-transform:none;font-size:.7rem">(opcional)</span></label>
                                 <input class="form-input" type="number" id="fAntes" placeholder="500" />
                             </div>
                         </div>
@@ -1781,6 +1782,18 @@
                     </div>
                     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem"
                         id="vistaGrid"></div>
+                </div>
+
+                <!-- OPINIONES -->
+                <div class="tab-page" id="page-opiniones">
+                    <div class="page-header">
+                        <h1 class="page-title">Gestión de <em>Opiniones</em></h1>
+                        <p class="page-sub">Revisa y modera las reseñas de tus clientas</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title" id="opinionesAdminTitle">Opiniones recibidas</div>
+                        <div id="opinionesAdminLista" style="min-height:80px"></div>
+                    </div>
                 </div>
 
             </main>
@@ -2102,7 +2115,7 @@
             renderPage(page)
         }
 
-        function renderPage(p) {
+        async function renderPage(p) {
             if (p === 'dashboard') renderDash()
             else if (p === 'productos') renderTabla()
             else if (p === 'catalogo') renderVista()
@@ -2110,6 +2123,7 @@
             else if (p === 'agregar') { poblarSelectCat('fCat'); renderVariantes('fVariants') }
             else if (p === 'fotos') renderFotos()
             else if (p === 'promociones') renderPromos()
+            else if (p === 'opiniones') { await cargarOpinionesAdmin(); renderOpinionesAdmin() }
         }
 
         // ── DASHBOARD ──
@@ -2464,18 +2478,16 @@
             const oferta = document.getElementById('fOferta').checked
             const nuevo = document.getElementById('fNuevo').checked
 
-            if (!nombre || !precio || !cat) {
-                notif('warning', 'Faltan datos', 'Completa el nombre, precio y categoría antes de guardar.')
+            if (!cat) {
+                notif('warning', 'Falta la categoría', 'Selecciona una categoría antes de guardar.')
                 return
             }
 
             // Filtrar variantes vacías (sin imagen Y sin color)
             const variantes = (variantesEdit.fVariants || []).filter(v => v.img || v.color)
 
-            // Validar que las variantes con color tengan imagen
-            const sinImagen = variantes.filter(v => !v.img)
-            if (sinImagen.length > 0) {
-                notif('warning', 'Faltan imágenes', `Hay ${sinImagen.length} color(es) sin imagen. Sube foto o elimínalos.`)
+            if (!variantes.length) {
+                notif('warning', 'Falta la foto', 'Agrega al menos una foto del producto.')
                 return
             }
 
@@ -2497,7 +2509,8 @@
                 const imgPrincipal = variantesClean[0]?.img || ''
 
                 const prod = {
-                    id, nombre, desc, precio, antes, cat, oferta, nuevo,
+                    id, nombre: nombre || 'Sin nombre', desc: desc || '', 
+                    precio: precio || null, antes, cat, oferta, nuevo,
                     img: imgPrincipal,
                     variantes: variantesClean
                 }
@@ -2846,6 +2859,56 @@
                 promociones = promociones.filter(x => String(x.id) !== String(id))
                 renderPromos(); toast('Promoción eliminada', 'warning')
             } catch (e) { notif('error', 'Error', e.message) }
+            finally { spinner(false) }
+        }
+
+        // ── OPINIONES (ADMIN) ──
+        let opinionesAdmin = []
+
+        async function cargarOpinionesAdmin() {
+            try {
+                const snap = await getDocs(collection(db, 'opiniones'))
+                opinionesAdmin = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+                    .sort((a, b) => (b.ts || 0) - (a.ts || 0))
+            } catch(e) {
+                opinionesAdmin = []
+            }
+        }
+
+        function renderOpinionesAdmin() {
+            const lista = document.getElementById('opinionesAdminLista')
+            document.getElementById('opinionesAdminTitle').textContent = `Opiniones recibidas (${opinionesAdmin.length})`
+            if (!opinionesAdmin.length) {
+                lista.innerHTML = '<p style="color:var(--muted);font-size:.87rem;padding:16px 0">Sin opiniones aún. Cuando las clientas dejen reseñas en la página aparecerán aquí.</p>'
+                return
+            }
+            lista.innerHTML = opinionesAdmin.map(o => {
+                const estrellas = o.estrellas || 5
+                const stars = [1,2,3,4,5].map(i => `<span style="color:${i<=estrellas?'#f4b942':'#e0d0da'}">★</span>`).join('')
+                const fecha = o.ts ? new Date(o.ts).toLocaleDateString('es-MX', {year:'numeric',month:'short',day:'numeric'}) : '—'
+                return `<div style="display:flex;align-items:flex-start;gap:16px;padding:16px 0;border-bottom:1px solid var(--borde);flex-wrap:wrap">
+                    <div style="flex:1;min-width:200px">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                            <div style="font-weight:600;font-size:.95rem">${o.nombre || 'Clienta anónima'}</div>
+                            <div style="font-size:.95rem">${stars}</div>
+                        </div>
+                        <div style="font-size:.87rem;color:var(--texto);line-height:1.5;font-style:italic">"${o.texto || ''}"</div>
+                        <div style="font-size:.75rem;color:var(--muted);margin-top:4px">${fecha}</div>
+                    </div>
+                    <button class="del-btn" style="flex-shrink:0" onclick="eliminarOpinion('${o.id}')">Eliminar</button>
+                </div>`
+            }).join('')
+        }
+
+        window.eliminarOpinion = async function(id) {
+            if (!confirm('¿Eliminar esta opinión?')) return
+            spinner(true, 'Eliminando...')
+            try {
+                await fsDel('opiniones', id)
+                opinionesAdmin = opinionesAdmin.filter(x => x.id !== id)
+                renderOpinionesAdmin()
+                toast('Opinión eliminada', 'warning')
+            } catch(e) { notif('error', 'Error', e.message) }
             finally { spinner(false) }
         }
 
